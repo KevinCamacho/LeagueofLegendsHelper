@@ -10,7 +10,5 @@ public class SummonerSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summoner_search);
 
-
-        //asvawvawerv
     }
 }
