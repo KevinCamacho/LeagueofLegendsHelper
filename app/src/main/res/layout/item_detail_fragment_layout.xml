@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:id="@+id/itemImage"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/itemImage"
+        android:id="@+id/totalGoldLabel"
+        android:text="Total gold cost: " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/totalGoldLabel"
+        android:layout_alignTop="@+id/totalGoldLabel"
+        android:id="@+id/totalGold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/combineGoldLabel"
+        android:layout_below="@+id/totalGoldLabel"
+        android:layout_alignStart="@+id/totalGoldLabel"
+        android:text="Combine cost: "/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/combineGold"
+        android:layout_toRightOf="@+id/totalGoldLabel"
+        android:layout_alignTop="@id/combineGoldLabel"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Builds out of: "
+        android:layout_alignStart="@+id/totalGoldLabel"
+        android:layout_below="@+id/combineGoldLabel"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_alignStart="@+id/itemImage"
+        android:layout_below="@+id/itemImage"
+        android:paddingTop="10dp"/>
+
+
+</RelativeLayout>

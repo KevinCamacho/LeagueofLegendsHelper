@@ -9,11 +9,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class ItemListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ItemListActivity extends AppCompatActivity
+                        implements NavigationView.OnNavigationItemSelectedListener,
+                            ItemRVFragment.ItemRVCardClickListener{
 
     private Toolbar toolBar;
     private TextView toolBarTitle;
@@ -47,12 +51,13 @@ public class ItemListActivity extends AppCompatActivity implements NavigationVie
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_View);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ItemRVFragment()).commit();
+        getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frameLayout, new ItemRVFragment()).commit();
     }
 
     @Override
     public void onBackPressed() {
-
+        toolBarTitle.setText(("Items"));
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
@@ -79,5 +84,16 @@ public class ItemListActivity extends AppCompatActivity implements NavigationVie
         drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    @Override
+    public void itemClicked(View v, int position) {
+        Log.d("test", "Activity: " + ItemList.getItem(position).get(("name")) + " was clicked");
+
+        toolBarTitle.setText(ItemList.getItem(position).get("name").toString());
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, ItemDetailFragment.newInstance(position))
+                .addToBackStack(null).commit();
     }
 }

@@ -81,7 +81,8 @@ public class RiotPortal {
                     ArrayList<String> fromArray = new ArrayList<String>();
                     ArrayList<String> intoArray = new ArrayList<String>();
                     String imageLink = "";
-                    String gold = "";
+                    String combineGold = "";
+                    String totalGold = "";
                     Bitmap image = null;
 
 
@@ -104,7 +105,9 @@ public class RiotPortal {
 
 
                     if (currItem.has("sanitizedDescription")) {
-                        description = currItem.getString("sanitizedDescription");
+                        description = currItem.getString("description");
+                        description = description.replace("<br>", System.getProperty("line.separator"));
+                        description = description.replaceAll("<.*?>", "");
                     }
 
                     if (currItem.has("image")) {
@@ -119,7 +122,8 @@ public class RiotPortal {
 
                     if (currItem.has("gold")) {
                         JSONObject goldObject = currItem.getJSONObject("gold");
-                        gold = goldObject.getString("total");
+                        totalGold = goldObject.getString("total");
+                        combineGold = goldObject.getString("base");
                     }
 
 
@@ -128,7 +132,8 @@ public class RiotPortal {
                     itemHash.put("description", description);
                     itemHash.put("imageLink", imageLink);
                     itemHash.put("image", image);
-                    itemHash.put("gold", gold);
+                    itemHash.put("totalGold", totalGold);
+                    itemHash.put("combineGold", combineGold);
                     itemHash.put("from", fromArray);
                     itemHash.put("into", intoArray);
 
@@ -136,7 +141,7 @@ public class RiotPortal {
 
                     Log.d("test", "ID: " + id);
                     Log.d("test", "Name: " + name);
-                    Log.d("test", "Gold: " + gold);
+                    Log.d("test", "Total Gold: " + totalGold);
                     Log.d("test", "ImageLink: " + imageLink);
 
 

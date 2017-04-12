@@ -1,5 +1,6 @@
 package com.example.kevin.leagueoflegendshelper;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,12 +25,29 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     private RecyclerView rV;
     private RecyclerView.Adapter itemAdapter;
     private RecyclerView.LayoutManager lM;
-    private List<Map<String, ?>> itemList;
+    //private List<Map<String, ?>> itemList;
+
+    private ItemRVCardClickListener clickListener;
+
+    public ItemRVFragment() {
+        //constructor for a fragment must be empty
+    }
+
+    public interface ItemRVCardClickListener {
+        public void itemClicked(View v, int position);
+    }
+
+    @Override
+    @Deprecated
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        clickListener = (ItemRVCardClickListener) activity;
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.item_rv_fragment_layout, container, false);
 
-        itemList = new ArrayList<Map<String,?>>();
+        //itemList = new ArrayList<Map<String,?>>();
 
         rV = (RecyclerView) view.findViewById(R.id.itemRV);
         rV.setHasFixedSize(true);
@@ -37,15 +55,18 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
         //lM = new LinearLayoutManager(view.getContext());
         lM = new GridLayoutManager(view.getContext(), 4);
 
-        itemAdapter = new ItemRVAdapter(this, itemList);
+
+        itemAdapter = new ItemRVAdapter(this, ItemList.getList());
 
         rV.setLayoutManager(lM);
 
         rV.setAdapter(itemAdapter);
 
 
-        RiotPortal.DownloadAllItems downloader = new RiotPortal.DownloadAllItems( (ItemRVAdapter) itemAdapter, itemList);
-        downloader.execute("h");
+        if (ItemList.getSize() == 0) {
+            RiotPortal.DownloadAllItems downloader = new RiotPortal.DownloadAllItems((ItemRVAdapter) itemAdapter, ItemList.getList());
+            downloader.execute("h");
+        }
 
 
 
@@ -54,6 +75,8 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
 
     @Override
     public void itemImageClicked(View view, int position) {
-        Log.d("test", "Image with id " + itemList.get(position).get("id") + " was clicked");
+
+        clickListener.itemClicked(view, position);
+
     }
 }
