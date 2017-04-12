@@ -1,5 +1,6 @@
 package com.example.kevin.leagueoflegendshelper;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -17,29 +18,30 @@ import org.json.*;
 
 public class RiotPortal {
 
-    private static String APIKey1 = "RGAPI-8f158ea6-05a6-4765-8a5a-cfada6c5345e";
-    private static String APIKey2 = "RGAPI-3a3ee533-86cd-4a16-b7ad-820384e4f594";
+    private static final String APIKey1 = "RGAPI-3dfd8f5c-e0da-4938-a357-be7e8fae77ee";
+    private static final String APIKey2 = "RGAPI-3a3ee533-86cd-4a16-b7ad-820384e4f594";
 
-    private static String ItemURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/item?itemListData=from,gold,image,into,sanitizedDescription&api_key=";
+    private static final String ItemURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/item?itemListData=from,gold,image,into,sanitizedDescription&api_key=";
+    private static final String ItemImageURL = "http://ddragon.leagueoflegends.com/cdn/7.6.1/img/item/";
 
     private static String DDragonVer;
 
 
-    public final static class DownloadAllItems extends AsyncTask<String, Void,  ArrayList<HashMap<String, ?>>> {
+    public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
 
         private WeakReference<ItemRVAdapter> adapterReference;
-        private WeakReference<ArrayList<HashMap<String, ?>>> itemListReference;
+        private WeakReference<List<Map<String, ?>>> itemListReference;
 
-        public DownloadAllItems(ItemRVAdapter adapter, ArrayList<HashMap<String, ?>> itemList) {
+        public DownloadAllItems(ItemRVAdapter adapter, List<Map<String, ?>> itemList) {
             adapterReference = new WeakReference<ItemRVAdapter>(adapter);
-            itemListReference = new WeakReference<ArrayList<HashMap<String, ?>>>(itemList);
+            itemListReference = new WeakReference<List<Map<String, ?>>>(itemList);
         }
 
         @Override
-        protected ArrayList<HashMap<String, ?>> doInBackground(String... params) {
+        protected List<Map<String, ?>> doInBackground(String... params) {
             String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(ItemURL+APIKey1);
 
-            ArrayList<HashMap<String, ?>> downloadedList = new ArrayList<HashMap<String, ?>>();
+            List<Map<String, ?>> downloadedList = new ArrayList<Map<String, ?>>();
 
             try {
                 JSONObject jsonObject = new JSONObject(returnJSON);
@@ -49,7 +51,26 @@ public class RiotPortal {
 
                 for (int x = 0; x < itemData.names().length(); x++) {
                     HashMap itemHash = new HashMap();
-                    if (itemData.names().getString(x).equals("3632")) {
+                    if (itemData.names().getString(x).equals("3632")
+                            || itemData.names().getString(x).equals("3640")
+                            || itemData.names().getString(x).equals("3630")
+                            || itemData.names().getString(x).equals("3633")
+                            || itemData.names().getString(x).equals("3637")
+                            || itemData.names().getString(x).equals("3634")
+                            || itemData.names().getString(x).equals("3635")
+                            || itemData.names().getString(x).equals("3631")
+                            || itemData.names().getString(x).equals("3642")
+                            || itemData.names().getString(x).equals("3648")
+                            || itemData.names().getString(x).equals("3643")
+                            || itemData.names().getString(x).equals("3680")
+                            || itemData.names().getString(x).equals("3681")
+                            || itemData.names().getString(x).equals("3682")
+                            || itemData.names().getString(x).equals("3683")
+                            || itemData.names().getString(x).equals("3461")
+                            || itemData.names().getString(x).equals("3460")
+                            || itemData.names().getString(x).equals("3902")
+                            || itemData.names().getString(x).equals("3901")
+                            || itemData.names().getString(x).equals("3647")) {
                         continue;
                     }
                     JSONObject currItem = itemData.getJSONObject(itemData.names().getString(x));
@@ -59,6 +80,9 @@ public class RiotPortal {
                     String description = "";
                     ArrayList<String> fromArray = new ArrayList<String>();
                     ArrayList<String> intoArray = new ArrayList<String>();
+                    String imageLink = "";
+                    String gold = "";
+                    Bitmap image = null;
 
 
                     if (currItem.has("from")) {
@@ -83,16 +107,27 @@ public class RiotPortal {
                         description = currItem.getString("sanitizedDescription");
                     }
 
+                    if (currItem.has("image")) {
+                        JSONObject imageObject = currItem.getJSONObject("image");
+                        imageLink = imageObject.getString("full");
+
+                        image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+imageLink);
+
+                    }
 
 
 
-                    JSONObject goldObject = currItem.getJSONObject("gold");
-                    String gold = goldObject.getString("total");
+                    if (currItem.has("gold")) {
+                        JSONObject goldObject = currItem.getJSONObject("gold");
+                        gold = goldObject.getString("total");
+                    }
 
 
                     itemHash.put("id", id);
                     itemHash.put("name", name);
                     itemHash.put("description", description);
+                    itemHash.put("imageLink", imageLink);
+                    itemHash.put("image", image);
                     itemHash.put("gold", gold);
                     itemHash.put("from", fromArray);
                     itemHash.put("into", intoArray);
@@ -102,6 +137,7 @@ public class RiotPortal {
                     Log.d("test", "ID: " + id);
                     Log.d("test", "Name: " + name);
                     Log.d("test", "Gold: " + gold);
+                    Log.d("test", "ImageLink: " + imageLink);
 
 
                 }
@@ -114,10 +150,15 @@ public class RiotPortal {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<HashMap<String, ?>> list) {
-            ArrayList<HashMap<String, ?>> refList = itemListReference.get();
+        protected void onPostExecute(List<Map<String, ?>> list) {
+            List<Map<String, ?>> refList = itemListReference.get();
 
-            refList = (ArrayList<HashMap<String, ?>>) list.clone();
+            for (int x = 0; x < list.size(); x++) {
+                HashMap item = (HashMap) ((HashMap) list.get(x)).clone();
+                refList.add(item);
+            }
+
+            adapterReference.get().notifyDataSetChanged();
         }
     }
     
