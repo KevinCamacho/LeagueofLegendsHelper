@@ -18,5 +18,7 @@
         <activity android:name=".ItemListActivity" />
         <activity android:name=".ChampionListActivity"></activity>
     </application>
+    <!-- Permission: Allow Connections to the Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

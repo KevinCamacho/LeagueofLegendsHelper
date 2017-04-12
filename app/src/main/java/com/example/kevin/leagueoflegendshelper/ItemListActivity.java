@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class ItemListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -17,11 +18,14 @@ public class ItemListActivity extends AppCompatActivity implements NavigationVie
     private Toolbar toolBar;
     private TextView toolBarTitle;
     private DrawerLayout drawerLayout;
+    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
+
+        frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
 
         toolBar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolBar);
@@ -42,6 +46,8 @@ public class ItemListActivity extends AppCompatActivity implements NavigationVie
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_View);
         navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new ItemRVFragment()).commit();
     }
 
     @Override
