@@ -1,5 +1,6 @@
 package com.example.kevin.leagueoflegendshelper;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,6 +29,7 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
 
 
         toolBarTitle = (TextView) findViewById(R.id.toolBar_Title);
+        toolBarTitle.setText("Summoner Search");
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_Layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolBar,
@@ -56,6 +58,22 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        switch (item.getItemId()) {
+            case R.id.nav_sumSearch:
+                break;
+            case R.id.nav_itemList:
+                startActivity(new Intent(SummonerSearchActivity.this, ItemListActivity.class));
+                break;
+            case R.id.nav_champList:
+                startActivity(new Intent(SummonerSearchActivity.this, ChampionListActivity.class));
+                break;
+            default:
+                break;
+        }
+
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+
+        return true;
     }
 }
