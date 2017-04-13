@@ -61,7 +61,8 @@ public class RiotPortal {
                             || itemData.names().getString(x).equals("3673")
                             || itemData.names().getString(x).equals("3675")
                             || itemData.names().getString(x).equals("3422")
-                            || itemData.names().getString(x).equals("3416")) {
+                            || itemData.names().getString(x).equals("3416")
+                            || itemData.names().getString(x).equals("3633")) {
                         continue;
                     }
                     JSONObject currItem = itemData.getJSONObject(itemData.names().getString(x));

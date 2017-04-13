@@ -26,6 +26,7 @@ public class ItemDetailFragment extends Fragment {
     private TextView totalGold;
     private TextView combineGold;
     private TextView description;
+    private TextView buildsOutOfLabel;
 
     private ImageView itemImage;
     private ImageView fromImage1;
@@ -74,6 +75,7 @@ public class ItemDetailFragment extends Fragment {
         totalGold = (TextView) view.findViewById(R.id.totalGold);
         combineGold = (TextView) view.findViewById(R.id.combineGold);
         description = (TextView) view.findViewById(R.id.description);
+        buildsOutOfLabel = (TextView) view.findViewById(R.id.buildsOutOfLabel);
 
         itemImage = (ImageView) view.findViewById(R.id.itemImage);
         fromImage1 = (ImageView) view.findViewById(R.id.fromImage1);
@@ -133,6 +135,7 @@ public class ItemDetailFragment extends Fragment {
                         itemDetailFragClick.itemDetailFromClicked(v, item1From);
                     }
                 });
+                buildsOutOfLabel.setVisibility(View.VISIBLE);
             default:
                 break;
         }

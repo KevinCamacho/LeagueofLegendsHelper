@@ -43,7 +43,8 @@
         android:text="Builds out of: "
         android:id="@+id/buildsOutOfLabel"
         android:layout_alignStart="@+id/totalGoldLabel"
-        android:layout_below="@+id/combineGoldLabel"/>
+        android:layout_below="@+id/combineGoldLabel"
+        android:visibility="invisible"/>
 
     <ImageView
         android:layout_width="40dip"
