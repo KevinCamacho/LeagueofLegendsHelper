@@ -41,12 +41,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Builds out of: "
+        android:id="@+id/buildsOutOfLabel"
         android:layout_alignStart="@+id/totalGoldLabel"
         android:layout_below="@+id/combineGoldLabel"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:id="@+id/fromImage1"
+        android:layout_toEndOf="@+id/buildsOutOfLabel"
+        android:layout_alignTop="@+id/buildsOutOfLabel"/>
+
+    <ImageView
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:id="@+id/fromImage2"
+        android:layout_toEndOf="@+id/fromImage1"
+        android:layout_alignTop="@+id/fromImage1"/>
+
+    <ImageView
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:id="@+id/fromImage3"
+        android:layout_toEndOf="@+id/fromImage2"
+        android:layout_alignTop="@+id/fromImage2"/>
 
     <TextView
         android:layout_width="match_parent"

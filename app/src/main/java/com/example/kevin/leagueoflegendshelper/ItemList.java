@@ -23,5 +23,18 @@ public class ItemList {
         return itemList.get(x);
     }
 
+    public static int getIndexOf(String itemID) {
+        int index = -1;
+
+        for (int x = 0; x < itemList.size(); x++) {
+            String id = (String) itemList.get(x).get("id");
+            if (id.equals(itemID)) {
+                index = x;
+                break;
+            }
+        }
+        return index;
+    }
+
 
 }

@@ -39,6 +39,8 @@ public class ItemRVAdapter extends RecyclerView.Adapter<ItemRVAdapter.ItemViewHo
         HashMap item = (HashMap) itemList.get(position);
 
         holder.itemImage.setImageBitmap((Bitmap) item.get("image"));
+
+        holder.itemImage.setTransitionName("itemTrans" + position);
     }
 
     @Override

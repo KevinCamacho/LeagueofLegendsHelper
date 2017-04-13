@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,34 +49,25 @@ public class RiotPortal {
 
                 JSONObject itemData = jsonObject.getJSONObject("data");
 
-
                 for (int x = 0; x < itemData.names().length(); x++) {
                     HashMap itemHash = new HashMap();
                     if (itemData.names().getString(x).equals("3632")
-                            || itemData.names().getString(x).equals("3640")
-                            || itemData.names().getString(x).equals("3630")
-                            || itemData.names().getString(x).equals("3633")
                             || itemData.names().getString(x).equals("3637")
-                            || itemData.names().getString(x).equals("3634")
-                            || itemData.names().getString(x).equals("3635")
-                            || itemData.names().getString(x).equals("3631")
                             || itemData.names().getString(x).equals("3642")
                             || itemData.names().getString(x).equals("3648")
-                            || itemData.names().getString(x).equals("3643")
-                            || itemData.names().getString(x).equals("3680")
-                            || itemData.names().getString(x).equals("3681")
-                            || itemData.names().getString(x).equals("3682")
-                            || itemData.names().getString(x).equals("3683")
                             || itemData.names().getString(x).equals("3461")
-                            || itemData.names().getString(x).equals("3460")
-                            || itemData.names().getString(x).equals("3902")
-                            || itemData.names().getString(x).equals("3901")
-                            || itemData.names().getString(x).equals("3647")) {
+                            || itemData.names().getString(x).equals("3671")
+                            || itemData.names().getString(x).equals("3672")
+                            || itemData.names().getString(x).equals("3673")
+                            || itemData.names().getString(x).equals("3675")
+                            || itemData.names().getString(x).equals("3422")
+                            || itemData.names().getString(x).equals("3416")) {
                         continue;
                     }
                     JSONObject currItem = itemData.getJSONObject(itemData.names().getString(x));
 
                     String id = currItem.getString("id");
+                    Log.d("test", id);
                     String name = currItem.getString("name");
                     String description = "";
                     ArrayList<String> fromArray = new ArrayList<String>();
@@ -139,14 +131,19 @@ public class RiotPortal {
 
                     downloadedList.add(itemHash);
 
+                    //List<Map<String, ?>> refList = itemListReference.get();
+                    //refList.add((HashMap)itemHash.clone());
+                    //adapterReference.get().notifyItemInserted(refList.size()-1);
+
+
                     Log.d("test", "ID: " + id);
-                    Log.d("test", "Name: " + name);
-                    Log.d("test", "Total Gold: " + totalGold);
-                    Log.d("test", "ImageLink: " + imageLink);
+                    //Log.d("test", "Name: " + name);
+                    //Log.d("test", "Total Gold: " + totalGold);
+                    //Log.d("test", "ImageLink: " + imageLink);
 
 
                 }
-
+                //Log.d("test", "Largest of \"from\" items " + Collections.max(test));
             }
             catch(Exception e) {
                 Log.d("Exception", e.toString());

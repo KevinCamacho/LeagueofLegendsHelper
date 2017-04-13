@@ -34,7 +34,7 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     }
 
     public interface ItemRVCardClickListener {
-        public void itemClicked(View v, int position);
+        public void itemRVClicked(View v, int position);
     }
 
     @Override
@@ -62,7 +62,6 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
 
         rV.setAdapter(itemAdapter);
 
-
         if (ItemList.getSize() == 0) {
             RiotPortal.DownloadAllItems downloader = new RiotPortal.DownloadAllItems((ItemRVAdapter) itemAdapter, ItemList.getList());
             downloader.execute("h");
@@ -76,7 +75,7 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     @Override
     public void itemImageClicked(View view, int position) {
 
-        clickListener.itemClicked(view, position);
+        clickListener.itemRVClicked(view, position);
 
     }
 }

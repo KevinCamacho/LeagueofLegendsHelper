@@ -9,20 +9,27 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Stack;
+
 public class ItemListActivity extends AppCompatActivity
                         implements NavigationView.OnNavigationItemSelectedListener,
-                            ItemRVFragment.ItemRVCardClickListener{
+                            ItemRVFragment.ItemRVCardClickListener,
+                            ItemDetailFragment.ItemDetailFragClick {
 
     private Toolbar toolBar;
     private TextView toolBarTitle;
     private DrawerLayout drawerLayout;
     private FrameLayout frameLayout;
+    private Stack<String> titleStack = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +58,23 @@ public class ItemListActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_View);
         navigationView.setNavigationItemSelectedListener(this);
 
+        ItemRVFragment itemRVFrag = new ItemRVFragment();
+        itemRVFrag.setEnterTransition(new Slide(Gravity.RIGHT));
+        itemRVFrag.setExitTransition(new Slide(Gravity.LEFT));
         getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frameLayout, new ItemRVFragment()).commit();
+                    .replace(R.id.frameLayout, itemRVFrag).commit();
     }
 
     @Override
     public void onBackPressed() {
-        toolBarTitle.setText(("Items"));
+        //Log.d("test", "Title stack: " + titleStack.toString());
+        if (titleStack.size() > 0) {
+            toolBarTitle.setText(titleStack.pop());
+        }
+        else {
+            toolBarTitle.setText("Items");
+        }
+
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
@@ -87,13 +104,47 @@ public class ItemListActivity extends AppCompatActivity
     }
 
     @Override
-    public void itemClicked(View v, int position) {
-        Log.d("test", "Activity: " + ItemList.getItem(position).get(("name")) + " was clicked");
+    public void itemRVClicked(View v, int position) {
+        Log.d("test", "Activity: " + ItemList.getItem(position).get(("id")) + " " + ItemList.getItem(position).get("name") + " was clicked");
 
-        toolBarTitle.setText(ItemList.getItem(position).get("name").toString());
+        titleStack.push((String) toolBarTitle.getText());
+        //Log.d("test", "Title stack: " + titleStack.toString());
+        HashMap<String, ?> item = (HashMap) ItemList.getItem(position);
+        String itemName = (String) item.get("name");
+        toolBarTitle.setText(itemName);
+
+
+        ItemDetailFragment itemFrag = ItemDetailFragment.newInstance(position, "itemDetailTrans" + item.get("id"));
+        itemFrag.setSharedElementEnterTransition(new DetailsTransition());
+        itemFrag.setEnterTransition(new Slide(Gravity.RIGHT));
+        itemFrag.setExitTransition(new Slide(Gravity.LEFT));
+        itemFrag.setSharedElementReturnTransition(new DetailsTransition());
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frameLayout, ItemDetailFragment.newInstance(position))
+                .addSharedElement(v, "itemDetailTrans" + item.get("id"))
+                .replace(R.id.frameLayout, itemFrag)
+                .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void itemDetailFromClicked(View v, int position) {
+
+        titleStack.push((String) toolBarTitle.getText());
+        //Log.d("test", "Title stack: " + titleStack.toString());
+        HashMap<String, ?> newItem = (HashMap) ItemList.getItem(position);
+        String itemName = (String) newItem.get("name");
+        toolBarTitle.setText(itemName);
+
+
+        ItemDetailFragment itemFrag = ItemDetailFragment.newInstance(position, v.getTransitionName()+newItem.get("id"));
+        itemFrag.setSharedElementEnterTransition(new DetailsTransition());
+        itemFrag.setEnterTransition(new Slide(Gravity.RIGHT));
+        itemFrag.setExitTransition(new Slide(Gravity.LEFT));
+        itemFrag.setSharedElementReturnTransition(new DetailsTransition());
+
+        getSupportFragmentManager().beginTransaction()
+                .addSharedElement(v, v.getTransitionName()+newItem.get("id"))
+                .replace(R.id.frameLayout, itemFrag)
                 .addToBackStack(null).commit();
     }
 }
