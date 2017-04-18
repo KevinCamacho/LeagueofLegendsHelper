@@ -21,7 +21,6 @@ import java.util.Map;
 public class ItemRVAdapter extends RecyclerView.Adapter<ItemRVAdapter.ItemViewHolder> {
     private List<Map<String, ?>> itemList;
     private ItemClickListener itemClickListener;
-    private RiotPortal.DownloadItemImage imageDownloader;
 
     Context context;
 
