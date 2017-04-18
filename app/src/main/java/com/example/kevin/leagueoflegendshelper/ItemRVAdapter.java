@@ -1,11 +1,14 @@
 package com.example.kevin.leagueoflegendshelper;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +21,15 @@ import java.util.Map;
 public class ItemRVAdapter extends RecyclerView.Adapter<ItemRVAdapter.ItemViewHolder> {
     private List<Map<String, ?>> itemList;
     private ItemClickListener itemClickListener;
+    private RiotPortal.DownloadItemImage imageDownloader;
 
-    public ItemRVAdapter(ItemClickListener listener, List<Map<String, ?>> list) {
+    Context context;
+
+
+    public ItemRVAdapter(ItemClickListener listener, List<Map<String, ?>> list, Context theContext) {
         setItemClickListener(listener);
         itemList = list;
+        context = theContext;
     }
 
     @Override
@@ -38,7 +46,17 @@ public class ItemRVAdapter extends RecyclerView.Adapter<ItemRVAdapter.ItemViewHo
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         HashMap item = (HashMap) itemList.get(position);
 
-        holder.itemImage.setImageBitmap((Bitmap) item.get("image"));
+
+        Picasso.with(context).load(RiotPortal.ItemImageURL+item.get("imageLink")).into(holder.itemImage);
+
+        //imageDownloader = new RiotPortal.DownloadItemImage(holder.itemImage);
+        //imageDownloader.execute(item.get("imageLink").toString());
+
+        //holder.itemImage.setImageBitmap((Bitmap) item.get("image"));
+
+        //image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+item.get("imageLink"));
+
+        //holder.itemImage.setImageBitmap(image);
 
         holder.itemImage.setTransitionName("itemTrans" + position);
     }

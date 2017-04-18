@@ -56,7 +56,7 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
         lM = new GridLayoutManager(view.getContext(), 4);
 
 
-        itemAdapter = new ItemRVAdapter(this, ItemList.getList());
+        itemAdapter = new ItemRVAdapter(this, ItemList.getList(), getContext());
 
         rV.setLayoutManager(lM);
 

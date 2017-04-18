@@ -3,6 +3,7 @@ package com.example.kevin.leagueoflegendshelper;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -23,9 +24,32 @@ public class RiotPortal {
     private static final String APIKey2 = "RGAPI-3a3ee533-86cd-4a16-b7ad-820384e4f594";
 
     private static final String ItemURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/item?itemListData=from,gold,image,into,sanitizedDescription&api_key=";
-    private static final String ItemImageURL = "http://ddragon.leagueoflegends.com/cdn/7.6.1/img/item/";
+    public static final String ItemImageURL = "http://ddragon.leagueoflegends.com/cdn/7.6.1/img/item/";
 
     private static String DDragonVer;
+
+    public final static class DownloadItemImage extends AsyncTask<String, Void, Bitmap> {
+
+        WeakReference<ImageView> imageViewRef;
+
+        public DownloadItemImage(ImageView imageView) {
+            imageViewRef = new WeakReference<ImageView>(imageView);
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            Bitmap image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+params[0]);
+
+            return image;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap image) {
+            ImageView imageV = imageViewRef.get();
+
+            imageV.setImageBitmap(image);
+        }
+    }
 
 
     public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
@@ -107,7 +131,7 @@ public class RiotPortal {
                         JSONObject imageObject = currItem.getJSONObject("image");
                         imageLink = imageObject.getString("full");
 
-                        image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+imageLink);
+                        //image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+imageLink);
 
                     }
 
@@ -124,7 +148,7 @@ public class RiotPortal {
                     itemHash.put("name", name);
                     itemHash.put("description", description);
                     itemHash.put("imageLink", imageLink);
-                    itemHash.put("image", image);
+                    //itemHash.put("image", image);
                     itemHash.put("totalGold", totalGold);
                     itemHash.put("combineGold", combineGold);
                     itemHash.put("from", fromArray);
