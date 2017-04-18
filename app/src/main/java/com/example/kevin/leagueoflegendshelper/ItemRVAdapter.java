@@ -46,7 +46,7 @@ public class ItemRVAdapter extends RecyclerView.Adapter<ItemRVAdapter.ItemViewHo
         HashMap item = (HashMap) itemList.get(position);
 
 
-        Picasso.with(context).load(RiotPortal.ItemImageURL+item.get("imageLink")).into(holder.itemImage);
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + item.get("imageLink")).into(holder.itemImage);
 
         //imageDownloader = new RiotPortal.DownloadItemImage(holder.itemImage);
         //imageDownloader.execute(item.get("imageLink").toString());

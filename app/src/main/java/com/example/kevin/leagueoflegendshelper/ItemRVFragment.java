@@ -27,7 +27,7 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     private RecyclerView.LayoutManager lM;
     //private List<Map<String, ?>> itemList;
 
-    private ItemRVCardClickListener clickListener;
+    private ItemRVCardClickListener itemRVClicked;
 
     public ItemRVFragment() {
         //constructor for a fragment must be empty
@@ -41,7 +41,7 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     @Deprecated
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        clickListener = (ItemRVCardClickListener) activity;
+        itemRVClicked = (ItemRVCardClickListener) activity;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     @Override
     public void itemImageClicked(View view, int position) {
 
-        clickListener.itemRVClicked(view, position);
+        itemRVClicked.itemRVClicked(view, position);
 
     }
 }

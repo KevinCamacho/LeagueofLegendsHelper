@@ -99,7 +99,7 @@ public class ItemDetailFragment extends Fragment {
 
         description.setText(currItem.get("description").toString());
 
-        Picasso.with(getContext()).load(RiotPortal.ItemImageURL+currItem.get("imageLink")).into(itemImage);
+        Picasso.with(getContext()).load(RiotPortal.getItemImageURL() + currItem.get("imageLink")).into(itemImage);
 
         //itemImage.setImageBitmap((Bitmap) currItem.get("image"));
 
@@ -111,7 +111,7 @@ public class ItemDetailFragment extends Fragment {
             case 3:
                 item3From = ItemList.getIndexOf(fromArray.get(2).toString());
                 HashMap<String, ?> item3 = (HashMap) ItemList.getItem(item3From);
-                Picasso.with(getContext()).load(RiotPortal.ItemImageURL+item3.get("imageLink")).into(fromImage3);
+                Picasso.with(getContext()).load(RiotPortal.getItemImageURL() + item3.get("imageLink")).into(fromImage3);
                 //fromImage3.setImageBitmap((Bitmap) item3.get("image"));
                 fromImage3.setTransitionName(transitionName+item3.get("id") + "3");
                 fromImage3.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +123,7 @@ public class ItemDetailFragment extends Fragment {
             case 2:
                 item2From = ItemList.getIndexOf(fromArray.get(1).toString());
                 HashMap<String, ?> item2 = (HashMap) ItemList.getItem(item2From);
-                Picasso.with(getContext()).load(RiotPortal.ItemImageURL+item2.get("imageLink")).into(fromImage2);
+                Picasso.with(getContext()).load(RiotPortal.getItemImageURL() + item2.get("imageLink")).into(fromImage2);
                 //fromImage2.setImageBitmap((Bitmap) item2.get("image"));
                 fromImage2.setTransitionName(transitionName+item2.get("id") + "2");
                 fromImage2.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +135,7 @@ public class ItemDetailFragment extends Fragment {
             case 1:
                 item1From = ItemList.getIndexOf(fromArray.get(0).toString());
                 HashMap<String, ?> item1 = (HashMap) ItemList.getItem(item1From);
-                Picasso.with(getContext()).load(RiotPortal.ItemImageURL+item1.get("imageLink")).into(fromImage1);
+                Picasso.with(getContext()).load(RiotPortal.getItemImageURL() + item1.get("imageLink")).into(fromImage1);
                 //fromImage1.setImageBitmap((Bitmap) item1.get("image"));
                 fromImage1.setTransitionName(transitionName+item1.get("id") + "1");
                 fromImage1.setOnClickListener(new View.OnClickListener() {
