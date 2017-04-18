@@ -9,10 +9,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-public class ChampionListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import java.util.HashMap;
+
+public class ChampionListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+                                                                ChampionRVFragment.ChampRVCardClickedListener {
 
     private Toolbar toolBar;
     private TextView toolBarTitle;
@@ -42,6 +49,12 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_View);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ChampionRVFragment champRVFrag = new ChampionRVFragment();
+        champRVFrag.setEnterTransition(new Slide(Gravity.RIGHT));
+        champRVFrag.setExitTransition(new Slide(Gravity.LEFT));
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, champRVFrag).commit();
     }
 
     @Override
@@ -73,5 +86,13 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
         drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    @Override
+    public void champRVClicked(View v, int position) {
+
+        String name = (String) ((HashMap) ChampionList.getItem(position)).get("name");
+
+        Log.d("test", name);
     }
 }

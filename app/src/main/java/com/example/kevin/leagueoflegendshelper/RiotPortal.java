@@ -7,7 +7,9 @@ import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,37 +22,29 @@ import org.json.*;
 
 public class RiotPortal {
 
+    private static String DDragonVer = "3.6.14";
+
     private static final String APIKey1 = "RGAPI-3dfd8f5c-e0da-4938-a357-be7e8fae77ee";
     private static final String APIKey2 = "RGAPI-3a3ee533-86cd-4a16-b7ad-820384e4f594";
 
     private static final String ItemURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/item?itemListData=from,gold,image,into,sanitizedDescription&api_key=";
-    public static final String ItemImageURL = "http://ddragon.leagueoflegends.com/cdn/7.6.1/img/item/";
+    public static String ItemImageURL1 = "http://ddragon.leagueoflegends.com/cdn/";
+    public static String ItemImageURL2 = "/img/item/";
 
-    private static String DDragonVer;
+    public static final String ChampionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion?champData=image,lore&dataById=true&api_key=";
+    public static String ChampionImageURL1 = "http://ddragon.leagueoflegends.com/cdn/";
+    public static String ChampionImageURL2 = "/img/champion/";
 
-    public final static class DownloadItemImage extends AsyncTask<String, Void, Bitmap> {
+    public static final String LatestVersionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/versions?api_key=";
 
-        WeakReference<ImageView> imageViewRef;
 
-        public DownloadItemImage(ImageView imageView) {
-            imageViewRef = new WeakReference<ImageView>(imageView);
-        }
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            Bitmap image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+params[0]);
-
-            return image;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap image) {
-            ImageView imageV = imageViewRef.get();
-
-            imageV.setImageBitmap(image);
-        }
+    public final static String getItemImageURL() {
+        return ItemImageURL1 + DDragonVer + ItemImageURL2;
     }
 
+    public final static String getChampImageURL() {
+        return ChampionImageURL1 + DDragonVer + ChampionImageURL2;
+    }
 
     public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
 
@@ -64,11 +58,17 @@ public class RiotPortal {
 
         @Override
         protected List<Map<String, ?>> doInBackground(String... params) {
+            String versionJSON = MyUtility.downloadJSONusingHTTPGetRequest(LatestVersionURL+APIKey1);
+
             String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(ItemURL+APIKey1);
 
             List<Map<String, ?>> downloadedList = new ArrayList<Map<String, ?>>();
 
             try {
+                JSONArray jsonVersion = new JSONArray(versionJSON);
+                DDragonVer = jsonVersion.getString(0);
+
+
                 JSONObject jsonObject = new JSONObject(returnJSON);
 
                 JSONObject itemData = jsonObject.getJSONObject("data");
@@ -92,7 +92,7 @@ public class RiotPortal {
                     JSONObject currItem = itemData.getJSONObject(itemData.names().getString(x));
 
                     String id = currItem.getString("id");
-                    Log.d("test", id);
+                    //Log.d("test", id);
                     String name = currItem.getString("name");
                     String description = "";
                     ArrayList<String> fromArray = new ArrayList<String>();
@@ -100,7 +100,6 @@ public class RiotPortal {
                     String imageLink = "";
                     String combineGold = "";
                     String totalGold = "";
-                    Bitmap image = null;
 
 
                     if (currItem.has("from")) {
@@ -185,7 +184,110 @@ public class RiotPortal {
                 refList.add(item);
             }
 
+            Collections.sort(refList, new ItemComparator());
+
             adapterReference.get().notifyDataSetChanged();
+        }
+    }
+
+    public final static class DownloadAllChampions extends AsyncTask<String, Void, List<Map<String, ?>>> {
+
+
+        private WeakReference<ChampionRVAdapter> adapterReference;
+        private WeakReference<List<Map<String, ?>>> champListReference;
+
+        public DownloadAllChampions(ChampionRVAdapter adapter, List<Map<String, ?>> champList) {
+            adapterReference = new WeakReference<ChampionRVAdapter>(adapter);
+            champListReference = new WeakReference<List<Map<String, ?>>>(champList);
+        }
+
+        @Override
+        protected List<Map<String, ?>> doInBackground(String... params) {
+            String versionJSON = MyUtility.downloadJSONusingHTTPGetRequest(LatestVersionURL+APIKey1);
+
+
+            String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(ChampionURL+APIKey1);
+
+            List<Map<String, ?>> downloadedList = new ArrayList<Map<String, ?>>();
+
+            try {
+                Log.d("test", "Ver: " + DDragonVer);
+                JSONArray jsonVersion = new JSONArray(versionJSON);
+                DDragonVer = jsonVersion.getString(0);
+                Log.d("test", "Ver: " + DDragonVer);
+
+
+                JSONObject jsonObject = new JSONObject(returnJSON);
+
+                JSONObject champData = jsonObject.getJSONObject("data");
+
+                for (int x = 0; x < champData.names().length(); x++) {
+                    HashMap champHash = new HashMap();
+
+                    JSONObject currChamp = champData.getJSONObject(champData.names().getString(x));
+
+                    String id = currChamp.getString("id");
+                    String name = currChamp.getString("name");
+                    String title = currChamp.getString("title");
+                    String lore = currChamp.getString("lore");
+                    String imageLink = "";
+
+                    if (currChamp.has("image")) {
+                        JSONObject imageObject = currChamp.getJSONObject("image");
+
+                        imageLink = imageObject.getString("full");
+                    }
+
+                    champHash.put("id", id);
+                    champHash.put("name", name);
+                    champHash.put("title", title);
+                    champHash.put("lore", lore);
+                    champHash.put("imageLink", imageLink);
+
+                    downloadedList.add(champHash);
+
+                }
+
+            }
+            catch(Exception e) {
+                Log.d("Exception", e.toString());
+            }
+
+            return downloadedList;
+        }
+
+        @Override
+        protected void onPostExecute(List<Map<String, ?>> list) {
+            List<Map<String, ?>> refList = champListReference.get();
+
+            for (int x = 0; x < list.size(); x++) {
+                HashMap item = (HashMap) ((HashMap) list.get(x)).clone();
+                refList.add(item);
+            }
+            Collections.sort(refList, new ChampionComparator());
+
+            adapterReference.get().notifyDataSetChanged();
+        }
+    }
+
+    private final static class ItemComparator implements Comparator<Map<String, ?>> {
+
+        @Override
+        public int compare(Map<String, ?> o1, Map<String, ?> o2) {
+            String name1 = (String) o1.get("name");
+            String name2 = (String) o2.get("name");
+
+            return name1.compareTo(name2);
+        }
+    }
+
+    private final static class ChampionComparator implements Comparator<Map<String, ?>> {
+        @Override
+        public int compare(Map<String, ?> o1, Map<String, ?> o2) {
+            String name1 = (String) o1.get("name");
+            String name2 = (String) o2.get("name");
+
+            return name1.compareTo(name2);
         }
     }
     
