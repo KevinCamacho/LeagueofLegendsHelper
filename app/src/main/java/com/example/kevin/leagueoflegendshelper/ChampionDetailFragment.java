@@ -10,22 +10,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Kevin on 4/18/2017.
  */
 
 public class ChampionDetailFragment extends Fragment {
 
-    private int position;
+    private int champIndex;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private FragmentPagerAdapter adapter;
+
+    private List<Map<String, ?>> champInfo = new ArrayList<Map<String, ?>>();
 
     public ChampionDetailFragment() {
         //constructor for a fragment must be empty
     }
 
-    public ChampionDetailFragment newInstance(int position) {
+    public static ChampionDetailFragment newInstance(int position) {
         Bundle bundle = new Bundle();
 
         bundle.putInt("position", position);
@@ -38,7 +46,7 @@ public class ChampionDetailFragment extends Fragment {
 
     public void readBundle(Bundle bundle) {
         if (bundle != null) {
-            position = bundle.getInt("position");
+            champIndex = bundle.getInt("position");
         }
     }
 
@@ -52,12 +60,21 @@ public class ChampionDetailFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.view_Pager);
         tabLayout = (TabLayout) view.findViewById(R.id.tab_Layout);
 
-        viewPager.setAdapter(new ChampStatePagerAdapter(getFragmentManager()));
+        adapter = new ChampStatePagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
 
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(viewPager);
 
+        RiotPortal.DownloadChampionInformation downloader;
+
+        downloader = new RiotPortal.DownloadChampionInformation(adapter, champInfo);
+
+        HashMap currChamp = (HashMap) ChampionList.getItem(champIndex);
+        String currChampID = (String) currChamp.get("id");
+
+        downloader.execute(currChampID);
 
         return view;
     }
@@ -70,17 +87,21 @@ public class ChampionDetailFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return null;
+            switch (position) {
+
+            }
+            return ItemDetailFragment.newInstance(1, "lul");
         }
 
         @Override
         public int getCount() {
-            return 0;
+            return champInfo.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return super.getPageTitle(position);
+            return ((HashMap) champInfo.get(position)).get("name").toString();
+            //return "test";
         }
     }
 }

@@ -54,7 +54,7 @@ public class ItemDetailFragment extends Fragment {
     public static ItemDetailFragment newInstance(int id, String transitionName) {
         Bundle bundle = new Bundle();
 
-        bundle.putInt("id", id);
+        bundle.putInt("position", id);
         bundle.putString("transitionName", transitionName);
 
         ItemDetailFragment frag = new ItemDetailFragment();
@@ -65,7 +65,7 @@ public class ItemDetailFragment extends Fragment {
 
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
-            itemIndex = bundle.getInt("id");
+            itemIndex = bundle.getInt("position");
             this.transitionName = bundle.getString("transitionName");
         }
     }

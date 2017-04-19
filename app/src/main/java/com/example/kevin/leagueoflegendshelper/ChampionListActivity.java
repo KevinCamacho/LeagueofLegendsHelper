@@ -94,5 +94,9 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
         String name = (String) ((HashMap) ChampionList.getItem(position)).get("name");
 
         Log.d("test", "Activity: " + name + " was clicked.");
+        ChampionDetailFragment frag = ChampionDetailFragment.newInstance(position);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, frag)
+                .addToBackStack(null).commit();
     }
 }

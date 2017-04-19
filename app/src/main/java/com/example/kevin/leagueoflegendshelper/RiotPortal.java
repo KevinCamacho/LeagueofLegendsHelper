@@ -2,6 +2,7 @@ package com.example.kevin.leagueoflegendshelper;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -35,7 +36,8 @@ public class RiotPortal {
     public static String ChampionImageURL1 = "http://ddragon.leagueoflegends.com/cdn/";
     public static String ChampionImageURL2 = "/img/champion/";
 
-    public static final String InvididualChampionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion/1?champData=image,lore,passive,spells&api_key=";
+    public static final String InvididualChampionURL1 = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion/";
+    public static final String IndividualChampionURL2 = "?champData=image,lore,passive,spells&api_key=";
 
     public static final String LatestVersionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/versions?api_key=";
 
@@ -46,6 +48,10 @@ public class RiotPortal {
 
     public final static String getChampImageURL() {
         return ChampionImageURL1 + DDragonVer + ChampionImageURL2;
+    }
+
+    public final static String getIndividualChampURL(String id) {
+        return InvididualChampionURL1 + id + IndividualChampionURL2;
     }
 
     public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
@@ -230,7 +236,6 @@ public class RiotPortal {
 
                     String id = currChamp.getString("id");
                     String name = currChamp.getString("name");
-                    String title = currChamp.getString("title");
                     String imageLink = "";
 
                     if (currChamp.has("image")) {
@@ -241,7 +246,6 @@ public class RiotPortal {
 
                     champHash.put("id", id);
                     champHash.put("name", name);
-                    champHash.put("title", title);
                     champHash.put("imageLink", imageLink);
 
                     downloadedList.add(champHash);
@@ -267,6 +271,111 @@ public class RiotPortal {
             Collections.sort(refList, new ChampionComparator());
 
             adapterReference.get().notifyDataSetChanged();
+        }
+    }
+
+    public final static class DownloadChampionInformation extends AsyncTask<String, Void, List<Map<String, ?>>> {
+
+        WeakReference<List<Map<String, ?>>> champInfoRef;
+        WeakReference<FragmentPagerAdapter> adapterRef;
+
+        public DownloadChampionInformation(FragmentPagerAdapter adapter, List<Map<String, ?>> champInfo) {
+            adapterRef = new WeakReference<FragmentPagerAdapter>(adapter);
+            champInfoRef = new WeakReference<List<Map<String, ?>>>(champInfo);
+        }
+
+        @Override
+        protected List<Map<String, ?>> doInBackground(String... champID) {
+            List<Map<String, ?>> downloadedInfo = new ArrayList<Map<String, ?>>();
+
+            String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(getIndividualChampURL(champID[0]) + APIKey1);
+
+            try {
+                HashMap champ = new HashMap<>();
+                HashMap passive = new HashMap<>();
+                HashMap abilQ = new HashMap<>();
+                HashMap abilW = new HashMap<>();
+                HashMap abilE = new HashMap<>();
+                HashMap abilR = new HashMap<>();
+
+                JSONObject jsonObject = new JSONObject(returnJSON);
+                JSONObject imageJSON = jsonObject.getJSONObject("image");
+
+                champ.put("name", jsonObject.getString("name"));
+                champ.put("title", jsonObject.getString("title"));
+                champ.put("imageLink", imageJSON.getString("full"));
+                champ.put("lore", jsonObject.getString("lore"));
+
+
+                JSONObject passiveJSON = jsonObject.getJSONObject("passive");
+                JSONObject passiveImageJSON = passiveJSON.getJSONObject("image");
+
+                passive.put("name", passiveJSON.getString("name"));
+                passive.put("description", passiveJSON.getString("description"));
+                passive.put("imageLink", passiveImageJSON.getString("full"));
+
+
+                JSONArray abilArray = jsonObject.getJSONArray("spells");
+
+                JSONObject qJSON = abilArray.getJSONObject(0);
+                JSONObject wJSON = abilArray.getJSONObject(1);
+                JSONObject eJSON = abilArray.getJSONObject(2);
+                JSONObject rJSON = abilArray.getJSONObject(3);
+
+
+                JSONObject qImageJSON = qJSON.getJSONObject("image");
+
+                abilQ.put("name", qJSON.getString("name"));
+                abilQ.put("description", qJSON.getString("description"));
+                abilQ.put("imageLink", qImageJSON.getString("full"));
+
+
+                JSONObject wImageJSON = wJSON.getJSONObject("image");
+
+                abilW.put("name", wJSON.getString("name"));
+                abilW.put("description", wJSON.getString("description"));
+                abilW.put("imageLink", wImageJSON.getString("full"));
+
+
+                JSONObject eImageJSON = eJSON.getJSONObject("image");
+
+                abilE.put("name", eJSON.getString("name"));
+                abilE.put("description", eJSON.getString("description"));
+                abilE.put("imageLink", eImageJSON.getString("full"));
+
+
+                JSONObject rImageJSON = rJSON.getJSONObject("image");
+
+                abilR.put("name", rJSON.getString("name"));
+                abilR.put("description", rJSON.getString("description"));
+                abilR.put("imageLink", rImageJSON.getString("full"));
+
+
+                downloadedInfo.add(champ);
+                downloadedInfo.add(passive);
+                downloadedInfo.add(abilQ);
+                downloadedInfo.add(abilW);
+                downloadedInfo.add(abilE);
+                downloadedInfo.add(abilR);
+
+            }
+            catch(Exception e) {
+                Log.d("Exception", e.toString());
+            }
+
+            return downloadedInfo;
+        }
+
+        @Override
+        protected void onPostExecute(List<Map<String, ?>> info) {
+            List<Map<String, ?>> refList = champInfoRef.get();
+
+            for (int x = 0; x < info.size(); x++) {
+                HashMap item = (HashMap) ((HashMap) info.get(x)).clone();
+                refList.add(item);
+            }
+
+            adapterRef.get().notifyDataSetChanged();
         }
     }
 
