@@ -31,9 +31,11 @@ public class RiotPortal {
     public static String ItemImageURL1 = "http://ddragon.leagueoflegends.com/cdn/";
     public static String ItemImageURL2 = "/img/item/";
 
-    public static final String ChampionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion?champData=image,lore&dataById=true&api_key=";
+    public static final String ChampionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion?champData=image&dataById=true&api_key=";
     public static String ChampionImageURL1 = "http://ddragon.leagueoflegends.com/cdn/";
     public static String ChampionImageURL2 = "/img/champion/";
+
+    public static final String InvididualChampionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion/1?champData=image,lore,passive,spells&api_key=";
 
     public static final String LatestVersionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/versions?api_key=";
 
@@ -120,7 +122,7 @@ public class RiotPortal {
                     }
 
 
-                    if (currItem.has("sanitizedDescription")) {
+                    if (currItem.has("description")) {
                         description = currItem.getString("description");
                         description = description.replace("<br>", System.getProperty("line.separator"));
                         description = description.replaceAll("<.*?>", "");
@@ -229,7 +231,6 @@ public class RiotPortal {
                     String id = currChamp.getString("id");
                     String name = currChamp.getString("name");
                     String title = currChamp.getString("title");
-                    String lore = currChamp.getString("lore");
                     String imageLink = "";
 
                     if (currChamp.has("image")) {
@@ -241,7 +242,6 @@ public class RiotPortal {
                     champHash.put("id", id);
                     champHash.put("name", name);
                     champHash.put("title", title);
-                    champHash.put("lore", lore);
                     champHash.put("imageLink", imageLink);
 
                     downloadedList.add(champHash);
