@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="100dip"
+        android:layout_height="100dip"
+        android:id="@+id/champImage"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/champName"
+        android:layout_toRightOf="@+id/champImage"
+        android:layout_alignTop="@+id/champImage"
+        android:textSize="36dp"
+        android:text="Mordekaiser"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/champTitle"
+        android:layout_below="@+id/champName"
+        android:layout_alignLeft="@+id/champName"
+        android:textSize="24dp"
+        android:paddingRight="5dp"
+        android:text="The Seneschal of Demacia" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/champTitle"
+        android:id="@+id/scrollView"
+        android:scrollbars="vertical"
+        android:fillViewport="true">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/loreText"
+            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            android:textSize="20dp"/>
+
+    </ScrollView>
+
+
+
+
+</RelativeLayout>
