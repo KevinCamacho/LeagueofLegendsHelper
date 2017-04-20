@@ -31,7 +31,7 @@
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/champTitle"
+        android:layout_below="@+id/champImage"
         android:id="@+id/scrollView"
         android:scrollbars="vertical"
         android:fillViewport="true">
@@ -39,7 +39,7 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/loreText"
+            android:id="@+id/champLore"
             android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             android:textSize="20dp"/>
 

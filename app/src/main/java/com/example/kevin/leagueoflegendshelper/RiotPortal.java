@@ -39,6 +39,9 @@ public class RiotPortal {
     public static final String InvididualChampionURL1 = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion/";
     public static final String IndividualChampionURL2 = "?champData=image,lore,passive,spells&api_key=";
 
+    public static final String AbilityURL1 = "http://ddragon.leagueoflegends.com/cdn/";
+    public static final String AbilityURL2 = "/img/";
+
     public static final String LatestVersionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/versions?api_key=";
 
 
@@ -52,6 +55,10 @@ public class RiotPortal {
 
     public final static String getIndividualChampURL(String id) {
         return InvididualChampionURL1 + id + IndividualChampionURL2;
+    }
+
+    public final static String getAbilityImageURL() {
+        return AbilityURL1 + DDragonVer + AbilityURL2;
     }
 
     public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
@@ -301,17 +308,25 @@ public class RiotPortal {
                 JSONObject jsonObject = new JSONObject(returnJSON);
                 JSONObject imageJSON = jsonObject.getJSONObject("image");
 
+                String description;
+
                 champ.put("name", jsonObject.getString("name"));
                 champ.put("title", jsonObject.getString("title"));
                 champ.put("imageLink", imageJSON.getString("full"));
-                champ.put("lore", jsonObject.getString("lore"));
+                description = jsonObject.getString("lore").toString();
+                description = description.replace("<br>", System.getProperty("line.separator"));
+                description = description.replaceAll("<.*?>", "");
+                champ.put("lore", description);
 
 
                 JSONObject passiveJSON = jsonObject.getJSONObject("passive");
                 JSONObject passiveImageJSON = passiveJSON.getJSONObject("image");
 
                 passive.put("name", passiveJSON.getString("name"));
-                passive.put("description", passiveJSON.getString("description"));
+                description = passiveJSON.getString("description").toString();
+                description = description.replace("<br>", System.getProperty("line.separator"));
+                description = description.replaceAll("<.*?>", "");
+                passive.put("description", description);
                 passive.put("imageLink", passiveImageJSON.getString("full"));
 
 
@@ -326,28 +341,40 @@ public class RiotPortal {
                 JSONObject qImageJSON = qJSON.getJSONObject("image");
 
                 abilQ.put("name", qJSON.getString("name"));
-                abilQ.put("description", qJSON.getString("description"));
+                description = qJSON.getString("description").toString();
+                description = description.replace("<br>", System.getProperty("line.separator"));
+                description = description.replaceAll("<.*?>", "");
+                abilQ.put("description", description);
                 abilQ.put("imageLink", qImageJSON.getString("full"));
 
 
                 JSONObject wImageJSON = wJSON.getJSONObject("image");
 
                 abilW.put("name", wJSON.getString("name"));
-                abilW.put("description", wJSON.getString("description"));
+                description = wJSON.getString("description").toString();
+                description = description.replace("<br>", System.getProperty("line.separator"));
+                description = description.replaceAll("<.*?>", "");
+                abilW.put("description", description);
                 abilW.put("imageLink", wImageJSON.getString("full"));
 
 
                 JSONObject eImageJSON = eJSON.getJSONObject("image");
 
                 abilE.put("name", eJSON.getString("name"));
-                abilE.put("description", eJSON.getString("description"));
+                description = eJSON.getString("description").toString();
+                description = description.replace("<br>", System.getProperty("line.separator"));
+                description = description.replaceAll("<.*?>", "");
+                abilE.put("description", description);
                 abilE.put("imageLink", eImageJSON.getString("full"));
 
 
                 JSONObject rImageJSON = rJSON.getJSONObject("image");
 
                 abilR.put("name", rJSON.getString("name"));
-                abilR.put("description", rJSON.getString("description"));
+                description = rJSON.getString("description").toString();
+                description = description.replace("<br>", System.getProperty("line.separator"));
+                description = description.replaceAll("<.*?>", "");
+                abilR.put("description", description);
                 abilR.put("imageLink", rImageJSON.getString("full"));
 
 

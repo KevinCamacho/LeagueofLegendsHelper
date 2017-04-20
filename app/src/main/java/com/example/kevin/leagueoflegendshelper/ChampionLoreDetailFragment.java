@@ -6,6 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -16,6 +20,11 @@ import java.util.HashMap;
 public class ChampionLoreDetailFragment extends Fragment {
 
     private HashMap loreHash;
+
+    private ImageView champImage;
+    private TextView champName;
+    private TextView champTitle;
+    private TextView champLore;
 
     public ChampionLoreDetailFragment() {
         //fragment constructor should be empty
@@ -40,6 +49,24 @@ public class ChampionLoreDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         readBundle(getArguments());
-        return super.onCreateView(inflater, container, savedInstanceState);
+
+        View view = inflater.inflate(R.layout.champ_lore_detail_fragment_layout, container, false);
+
+        champImage = (ImageView) view.findViewById(R.id.champImage);
+        champName = (TextView) view.findViewById(R.id.champName);
+        champTitle = (TextView) view.findViewById(R.id.champTitle);
+        champLore = (TextView) view.findViewById(R.id.champLore);
+
+        populateFields();
+
+        return view;
+    }
+
+    private void populateFields() {
+        champName.setText(loreHash.get("name").toString());
+        champTitle.setText(loreHash.get("title").toString());
+        champLore.setText(loreHash.get("lore").toString());
+
+        Picasso.with(getContext()).load(RiotPortal.getChampImageURL() + loreHash.get("imageLink")).into(champImage);
     }
 }

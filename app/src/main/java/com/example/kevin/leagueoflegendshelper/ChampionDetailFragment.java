@@ -88,9 +88,15 @@ public class ChampionDetailFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-
+                case 0:
+                    return ChampionLoreDetailFragment.newInstance((HashMap) champInfo.get(position));
+                case 1:
+                    return ChampionAbilityDetailFragment.newInstance((HashMap) champInfo.get(position), true);
+                default:
+                    return ChampionAbilityDetailFragment.newInstance((HashMap) champInfo.get(position), false);
             }
-            return ItemDetailFragment.newInstance(1, "lul");
+            //return ItemDetailFragment.newInstance(1, "lul");
+            //return ChampionLoreDetailFragment.newInstance((HashMap) champInfo.get(0));
         }
 
         @Override
