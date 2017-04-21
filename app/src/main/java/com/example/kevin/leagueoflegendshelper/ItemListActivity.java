@@ -59,8 +59,8 @@ public class ItemListActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ItemRVFragment itemRVFrag = new ItemRVFragment();
-        itemRVFrag.setEnterTransition(new Slide(Gravity.RIGHT));
-        itemRVFrag.setExitTransition(new Slide(Gravity.LEFT));
+        //itemRVFrag.setEnterTransition(new Slide(Gravity.RIGHT));
+        //itemRVFrag.setExitTransition(new Slide(Gravity.LEFT));
         getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayout, itemRVFrag).commit();
     }

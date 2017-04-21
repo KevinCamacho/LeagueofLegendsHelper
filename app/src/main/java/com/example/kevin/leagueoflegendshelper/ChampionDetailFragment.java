@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ public class ChampionDetailFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private FragmentPagerAdapter adapter;
+
 
     private List<Map<String, ?>> champInfo = new ArrayList<Map<String, ?>>();
 

@@ -2,6 +2,7 @@ package com.example.kevin.leagueoflegendshelper;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class ChampionLoreDetailFragment extends Fragment {
     private TextView champName;
     private TextView champTitle;
     private TextView champLore;
+
 
     public ChampionLoreDetailFragment() {
         //fragment constructor should be empty
@@ -56,6 +58,7 @@ public class ChampionLoreDetailFragment extends Fragment {
         champName = (TextView) view.findViewById(R.id.champName);
         champTitle = (TextView) view.findViewById(R.id.champTitle);
         champLore = (TextView) view.findViewById(R.id.champLore);
+
 
         populateFields();
 

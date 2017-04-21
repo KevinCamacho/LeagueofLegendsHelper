@@ -3,6 +3,9 @@ package com.example.kevin.leagueoflegendshelper;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
+import android.transition.Fade;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +31,8 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_champion_list);
 
         toolBar = (Toolbar) findViewById(R.id.toolBar);
@@ -53,13 +58,17 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
         ChampionRVFragment champRVFrag = new ChampionRVFragment();
         champRVFrag.setEnterTransition(new Slide(Gravity.RIGHT));
         champRVFrag.setExitTransition(new Slide(Gravity.LEFT));
-        getSupportFragmentManager().beginTransaction()
+        //champRVFrag.setEnterTransition(new Slide(Gravity.LEFT));
+        //champRVFrag.setExitTransition(new Slide(Gravity.RIGHT));
+        //champRVFrag.setEnterTransition(new Fade(Fade.IN));
+        //champRVFrag.setExitTransition(new Fade(Fade.OUT));
+        getSupportFragmentManager().beginTransaction()//.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.frameLayout, champRVFrag).commit();
     }
 
     @Override
     public void onBackPressed() {
-
+        toolBarTitle.setText("Champions");
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
@@ -93,10 +102,18 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
 
         String name = (String) ((HashMap) ChampionList.getItem(position)).get("name");
 
+        toolBarTitle.setText(name);
+
+
+        ChampionDetailFragment champFrag = ChampionDetailFragment.newInstance(position);
+        //champFrag.setEnterTransition(new Slide(Gravity.RIGHT));
+        //champFrag.setExitTransition(new Slide(Gravity.LEFT));
+        //champFrag.setEnterTransition(new Fade(Fade.IN));
+        //champFrag.setExitTransition(new Fade(Fade.OUT));
+
         Log.d("test", "Activity: " + name + " was clicked.");
-        ChampionDetailFragment frag = ChampionDetailFragment.newInstance(position);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frameLayout, frag)
+        getSupportFragmentManager().beginTransaction()//.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .replace(R.id.frameLayout, champFrag)
                 .addToBackStack(null).commit();
     }
 }

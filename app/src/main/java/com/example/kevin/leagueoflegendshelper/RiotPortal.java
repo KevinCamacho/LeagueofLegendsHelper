@@ -42,6 +42,9 @@ public class RiotPortal {
     public static final String AbilityURL1 = "http://ddragon.leagueoflegends.com/cdn/";
     public static final String AbilityURL2 = "/img/";
 
+    public static final String GetSummonerID1 = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/";
+    public static final String GetSummonerID2 = "?api_key=";
+
     public static final String LatestVersionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/versions?api_key=";
 
 
@@ -59,6 +62,10 @@ public class RiotPortal {
 
     public final static String getAbilityImageURL() {
         return AbilityURL1 + DDragonVer + AbilityURL2;
+    }
+
+    public final static String getSummonerIDURL(String name) {
+        return GetSummonerID1 + name + GetSummonerID2;
     }
 
     public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
@@ -206,7 +213,6 @@ public class RiotPortal {
     }
 
     public final static class DownloadAllChampions extends AsyncTask<String, Void, List<Map<String, ?>>> {
-
 
         private WeakReference<ChampionRVAdapter> adapterReference;
         private WeakReference<List<Map<String, ?>>> champListReference;
@@ -403,6 +409,39 @@ public class RiotPortal {
             }
 
             adapterRef.get().notifyDataSetChanged();
+        }
+    }
+
+    public final static class GetSummonerID extends AsyncTask<String, Void, String> {
+
+        WeakReference<String> idRef;
+
+        public GetSummonerID(String id) {
+            idRef = new WeakReference<String>(id);
+        }
+
+        @Override
+        protected String doInBackground(String... name) {
+            String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(getSummonerIDURL(name[0]) + APIKey1);
+
+            String id = "";
+
+            try {
+                JSONObject jsonObject = new JSONObject(returnJSON);
+                id = jsonObject.getString("id");
+            }
+            catch(Exception e) {
+                Log.d("Exception", e.toString());
+            }
+
+            return id;
+        }
+
+        @Override
+        protected void onPostExecute(String id) {
+            String ref = idRef.get();
+            ref = id;
+            Log.d("test", "" + ref);
         }
     }
 
