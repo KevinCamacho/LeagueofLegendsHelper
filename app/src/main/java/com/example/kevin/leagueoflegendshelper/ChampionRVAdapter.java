@@ -44,8 +44,7 @@ public class ChampionRVAdapter extends RecyclerView.Adapter<ChampionRVAdapter.Ch
     public void onBindViewHolder(ChampViewHolder holder, int position) {
         HashMap champ = (HashMap) champList.get(position);
 
-        Picasso.with(context).
-                load(RiotPortal.getChampImageURL() +champ.get("imageLink")).into(holder.champImage);
+        Picasso.with(context).load(RiotPortal.getChampImageURL() +champ.get("imageLink")).into(holder.champImage);
 
         holder.champImage.setTransitionName("champTrans" + position);
     }

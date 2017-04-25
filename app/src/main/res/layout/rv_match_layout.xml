@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        android:id="@+id/matchRVCard">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/winOrLose"
+                android:text="VICTORY"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/winOrLose"
+                android:id="@+id/playedChampPic"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/winOrLose"
+                android:text="Kills/Deaths/Assists"
+                android:paddingLeft="5dp"
+                android:id="@+id/kdaLabel"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/kdaLabel"
+                android:layout_alignStart="@+id/kdaLabel"
+                android:id="@+id/kda"
+                android:text="3/4/5"
+                android:paddingLeft="40dp"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/item1"
+                android:layout_toRightOf="@+id/kdaLabel"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/item2"
+                android:layout_toRightOf="@+id/item1"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/item3"
+                android:layout_toRightOf="@+id/item2"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/item4"
+                android:layout_below="@+id/item1"
+                android:layout_alignStart="@+id/item1"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/item5"
+                android:layout_below="@+id/item2"
+                android:layout_alignStart="@+id/item2"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/item6"
+                android:layout_below="@+id/item3"
+                android:layout_alignStart="@+id/item3"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/trinket"
+                android:layout_toRightOf="@+id/item3"
+                android:layout_alignTop="@+id/item3"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

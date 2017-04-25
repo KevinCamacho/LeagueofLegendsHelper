@@ -1,6 +1,7 @@
 package com.example.kevin.leagueoflegendshelper;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -15,14 +16,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class SummonerSearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-                                                         SearchView.OnQueryTextListener           {
+                                                         SearchView.OnQueryTextListener,
+                                                            RiotPortal.GetSummonerID.GetSummonerIDListener {
 
     private Toolbar toolBar;
     private TextView toolBarTitle;
     private DrawerLayout drawerLayout;
+
+    private FrameLayout frameLayout;
 
     private TextView searchLabel;
 
@@ -46,6 +53,7 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
 
         searchLabel = (TextView) findViewById(R.id.searchLabel);
 
+        frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
 
         toolBarTitle = (TextView) findViewById(R.id.toolBar_Title);
         toolBarTitle.setText("Summoner Search");
@@ -147,13 +155,32 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
     @Override
     public boolean onQueryTextSubmit(String query) {
         searchedForSum = query;
-        RiotPortal.GetSummonerID downloader = new RiotPortal.GetSummonerID(searchedForSumID);
+        RiotPortal.GetSummonerID downloader = new RiotPortal.GetSummonerID(this);
         downloader.execute(query);
-        return false;
+
+        View v = this.getWindow().getCurrentFocus();
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        }
+
+        return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    @Override
+    public void searchFinished(String response) {
+        searchedForSumID = response;
+        Log.d("test", "Summoner ID for " + searchedForSum + " = " + searchedForSumID);
+
+        SummonerSearchedFragment sumFrag = SummonerSearchedFragment.newInstance(searchedForSum, searchedForSumID);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, sumFrag).commit();
+        searchLabel.setText("");
     }
 }

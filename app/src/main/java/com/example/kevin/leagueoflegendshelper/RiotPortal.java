@@ -3,6 +3,7 @@ package com.example.kevin.leagueoflegendshelper;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -47,6 +48,12 @@ public class RiotPortal {
 
     public static final String LatestVersionURL = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/versions?api_key=";
 
+    public static final String GetRecentMatches1 = "https://na.api.riotgames.com/api/lol/NA/v1.3/game/by-summoner/";
+    public static final String GetRecentMatches2 = "/recent?api_key=";
+
+    public static final String GetChampNameByID1 = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion/";
+    public static final String GetChampNameByID2 = "?champData=image&api_key=";
+
 
     public final static String getItemImageURL() {
         return ItemImageURL1 + DDragonVer + ItemImageURL2;
@@ -66,6 +73,10 @@ public class RiotPortal {
 
     public final static String getSummonerIDURL(String name) {
         return GetSummonerID1 + name + GetSummonerID2;
+    }
+
+    public final static String getRecentMatches(String id) {
+        return GetRecentMatches1 + id + GetRecentMatches2;
     }
 
     public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
@@ -414,10 +425,14 @@ public class RiotPortal {
 
     public final static class GetSummonerID extends AsyncTask<String, Void, String> {
 
-        WeakReference<String> idRef;
+        final GetSummonerIDListener getSummonerIDListener;
 
-        public GetSummonerID(String id) {
-            idRef = new WeakReference<String>(id);
+        public interface GetSummonerIDListener {
+            public void searchFinished(String response);
+        }
+
+        public GetSummonerID(GetSummonerIDListener listener) {
+            this.getSummonerIDListener = listener;
         }
 
         @Override
@@ -439,9 +454,161 @@ public class RiotPortal {
 
         @Override
         protected void onPostExecute(String id) {
-            String ref = idRef.get();
-            ref = id;
-            Log.d("test", "" + ref);
+            if (getSummonerIDListener != null) {
+                getSummonerIDListener.searchFinished(id);
+            }
+        }
+    }
+
+    public final static class GetRecentMatches extends AsyncTask<String, HashMap, MatchList> {
+
+        private WeakReference<MatchList> matchListRef;
+        private WeakReference<RecyclerView.Adapter> adapterRef;
+
+        private test t;
+
+        public interface test {
+            public void test();
+        }
+
+        public GetRecentMatches(MatchList mL, RecyclerView.Adapter adapter, test t) {
+            matchListRef = new WeakReference<MatchList>(mL);
+            adapterRef = new WeakReference<RecyclerView.Adapter>(adapter);
+            this.t = t;
+        }
+
+        @Override
+        protected MatchList doInBackground(String... id) {
+            String versionJSON = MyUtility.downloadJSONusingHTTPGetRequest(LatestVersionURL+APIKey1);
+
+            MatchList matchList = new MatchList();
+
+            String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(getRecentMatches(id[0]) + APIKey1);
+
+            try {
+                JSONArray jsonVersion = new JSONArray(versionJSON);
+                DDragonVer = jsonVersion.getString(0);
+
+                JSONObject jsonObject = new JSONObject(returnJSON);
+
+                JSONArray gamesArray = jsonObject.getJSONArray("games");
+
+                for (int x = 0; x < gamesArray.length(); x++) {
+                    JSONObject gameObject = gamesArray.getJSONObject(x);
+
+                    HashMap currGame = new HashMap();
+
+                    JSONObject gameStatsObject;
+
+                    String win = "-1";
+                    String championID = "";
+                    String imageLink = "";
+                    String item1ID = "-1";
+                    String item2ID = "-1";
+                    String item3ID = "-1";
+                    String item4ID = "-1";
+                    String item5ID = "-1";
+                    String item6ID = "-1";
+                    String trinketID = "-1";
+                    String numKills = "0";
+                    String numDeaths = "0";
+                    String numAssists = "0";
+
+                    //Log.d("test", gameObject.names().toString());
+
+                    gameStatsObject = gameObject.getJSONObject("stats");
+                    win = gameStatsObject.getString("win");
+
+                    if (gameStatsObject.has("item0")) {
+                        item1ID = gameStatsObject.getString("item0");
+                    }
+                    if (gameStatsObject.has("item1")) {
+                        item2ID = gameStatsObject.getString("item1");
+                    }
+                    if (gameStatsObject.has("item2")) {
+                        item3ID = gameStatsObject.getString("item2");
+                    }
+                    if (gameStatsObject.has("item3")) {
+                        item4ID = gameStatsObject.getString("item3");
+                    }
+                    if (gameStatsObject.has("item4")) {
+                        item5ID = gameStatsObject.getString("item4");
+                    }
+                    if (gameStatsObject.has("item5")) {
+                        item6ID = gameStatsObject.getString("item5");
+                    }
+                    if (gameStatsObject.has("item6")) {
+                        trinketID = gameStatsObject.getString("item6");
+                    }
+
+                    if (gameStatsObject.has("championsKilles")) {
+                        numKills = gameStatsObject.getString("championsKilled");
+                    }
+
+                    if (gameStatsObject.has("numDeaths")) {
+                        numDeaths = gameStatsObject.getString("numDeaths");
+                    }
+
+                    if (gameStatsObject.has("assists")) {
+                        numAssists = gameStatsObject.getString("assists");
+                    }
+
+                    championID = gameObject.getString("championId");
+
+                    String champJSON = MyUtility.downloadJSONusingHTTPGetRequest(GetChampNameByID1 + championID + GetChampNameByID2 + APIKey1);
+                    JSONObject champObject = new JSONObject(champJSON);
+                    JSONObject imageObject = champObject.getJSONObject("image");
+
+                    imageLink = imageObject.getString("full");
+
+                    currGame.put("win", win);
+                    currGame.put("championID", championID);
+                    currGame.put("imageLink", imageLink);
+                    currGame.put("kills", numKills);
+                    currGame.put("deaths", numDeaths);
+                    currGame.put("assists", numAssists);
+                    currGame.put("item1ID", item1ID);
+                    currGame.put("item2ID", item2ID);
+                    currGame.put("item3ID", item3ID);
+                    currGame.put("item4ID", item4ID);
+                    currGame.put("item5ID", item5ID);
+                    currGame.put("item6ID", item6ID);
+                    currGame.put("trinketID", trinketID);
+
+                    //matchList.getList().add(currGame);
+                    publishProgress(currGame);
+
+                }
+
+
+            }
+            catch (Exception e) {
+                Log.d("Exception", e.toString());
+            }
+
+            return matchList;
+        }
+
+        @Override
+        protected void onProgressUpdate(HashMap... values) {
+            HashMap item = values[0];
+            matchListRef.get().add(item);
+            adapterRef.get().notifyItemInserted(matchListRef.get().getSize()-1);
+        }
+
+        @Override
+        protected void onPostExecute(MatchList list) {
+
+            /*MatchList mL = matchListRef.get();
+
+
+            for (int x = 0; x < list.getSize(); x++) {
+                HashMap item = (HashMap) ((HashMap) list.getItem(x)).clone();
+                mL.add(item);
+            }
+            t.test();*/
+            //adapterRef.get().notifyDataSetChanged();
+
         }
     }
 
