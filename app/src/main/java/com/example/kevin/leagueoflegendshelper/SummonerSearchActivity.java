@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SummonerSearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
@@ -38,13 +39,19 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
 
     private String searchedForSum;
     private String searchedForSumID;
+    private String searchedForSumProfileIconID;
+    private String searchedForSumLevel;
 
+    private SummonerSearchedFragment sumFrag;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summoner_search);
+
+        RiotPortal.UpdateVersion dl = new RiotPortal.UpdateVersion();
+        dl.execute("");
 
         toolBar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolBar);
@@ -70,6 +77,18 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_View);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    @Override
+    protected void onResume() {
+        if (searchMenuItem != null) {
+            searchMenuItem.collapseActionView();
+        }
+        if (sumFrag != null) {
+            getSupportFragmentManager().beginTransaction().remove(sumFrag).commit();
+        }
+        searchLabel.setText("Search for a summoner to begin");
+        super.onResume();
     }
 
     @Override
@@ -173,11 +192,15 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
     }
 
     @Override
-    public void searchFinished(String response) {
-        searchedForSumID = response;
+    public void searchFinished(String id, String profileID, String level) {
+        searchedForSumID = id;
+        searchedForSumProfileIconID = profileID;
+        searchedForSumLevel = level;
+
         Log.d("test", "Summoner ID for " + searchedForSum + " = " + searchedForSumID);
 
-        SummonerSearchedFragment sumFrag = SummonerSearchedFragment.newInstance(searchedForSum, searchedForSumID);
+        sumFrag = SummonerSearchedFragment
+                .newInstance(searchedForSum, searchedForSumID, searchedForSumProfileIconID, searchedForSumLevel);
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, sumFrag).commit();

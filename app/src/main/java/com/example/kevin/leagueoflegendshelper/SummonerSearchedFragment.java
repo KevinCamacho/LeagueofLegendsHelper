@@ -9,6 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Kevin on 4/24/2017.
@@ -18,6 +22,13 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
     private String summonerName;
     private String summonerID;
+    private String summonerProfileIconID;
+    private String summonerLevel;
+
+    private ImageView layoutProfileIcon;
+    private TextView layoutSummonerName;
+    private ImageView layoutRankIcon;
+    private TextView layoutRankLabel;
 
     private MatchList matchList;
 
@@ -29,12 +40,14 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
         //constructor needs to be empty
     }
 
-    public static SummonerSearchedFragment newInstance(String name, String id) {
+    public static SummonerSearchedFragment newInstance(String name, String id, String profileIconid, String level) {
         SummonerSearchedFragment frag = new SummonerSearchedFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("name", name);
-        bundle.putString("id", id);
+        bundle.putString("accountID", id);
+        bundle.putString("profileIconID", profileIconid);
+        bundle.putString("summonerLevel", level);
 
         frag.setArguments(bundle);
 
@@ -43,7 +56,9 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
     private void readBundle(Bundle bundle) {
         summonerName = bundle.getString("name");
-        summonerID = bundle.getString("id");
+        summonerID = bundle.getString("accountID");
+        summonerProfileIconID = bundle.getString("profileIconID");
+        summonerLevel = bundle.getString("summonerLevel");
     }
 
     @Override
@@ -52,8 +67,20 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         readBundle(getArguments());
 
-        matchList = new MatchList();
+        layoutProfileIcon = (ImageView) view.findViewById(R.id.profileIcon);
+        layoutSummonerName = (TextView) view.findViewById(R.id.summonerName);
+        layoutRankIcon = (ImageView) view.findViewById(R.id.rankIcon);
+        layoutRankLabel = (TextView) view.findViewById(R.id.rankLabel);
 
+        layoutSummonerName.setText(summonerName);
+
+        Picasso.with(getContext()).load(RiotPortal.getProfileIconURL(summonerProfileIconID)).into(layoutProfileIcon);
+
+        RiotPortal.GetLeaguesInfo dl = new RiotPortal.GetLeaguesInfo(layoutRankLabel, layoutRankIcon);
+        dl.execute(summonerID);
+
+
+        matchList = new MatchList();
 
         matchAdapter = new MatchListRVAdapter(matchList, getContext());
 

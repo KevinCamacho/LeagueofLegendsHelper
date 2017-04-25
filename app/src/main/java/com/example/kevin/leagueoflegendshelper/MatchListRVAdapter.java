@@ -1,6 +1,8 @@
 package com.example.kevin.leagueoflegendshelper;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -74,9 +76,11 @@ public class MatchListRVAdapter extends RecyclerView.Adapter<MatchListRVAdapter.
         switch((String) match.get("win")) {
             case "true":
                 holder.winOrLose.setText("VICTORY");
+                holder.cardView.setCardBackgroundColor(Color.parseColor("#A0DEB3"));
                 break;
             case "false":
                 holder.winOrLose.setText("DEFEAT");
+                holder.cardView.setCardBackgroundColor(Color.parseColor("#E4A0A0"));
                 break;
             default:
                 holder.winOrLose.setText("VICTORY");

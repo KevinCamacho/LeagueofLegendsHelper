@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -54,6 +55,12 @@ public class RiotPortal {
     public static final String GetChampNameByID1 = "https://global.api.riotgames.com/api/lol/static-data/NA/v1.2/champion/";
     public static final String GetChampNameByID2 = "?champData=image&api_key=";
 
+    public static final String GetProfileIcon1 = "http://ddragon.leagueoflegends.com/cdn/";
+    public static final String GetProfileIcon2 =  "/img/profileicon/";
+
+    public static final String GetLeagues1 = "https://na.api.riotgames.com/api/lol/NA/v2.5/league/by-summoner/";
+    public static final String GetLeagues2 = "?api_key=";
+
 
     public final static String getItemImageURL() {
         return ItemImageURL1 + DDragonVer + ItemImageURL2;
@@ -77,6 +84,14 @@ public class RiotPortal {
 
     public final static String getRecentMatches(String id) {
         return GetRecentMatches1 + id + GetRecentMatches2;
+    }
+
+    public final static String getProfileIconURL(String id) {
+        return GetProfileIcon1 + DDragonVer + GetProfileIcon2 + id + ".png";
+    }
+
+    public final static String getLeaguesURL(String id) {
+        return GetLeagues1 + id + GetLeagues2;
     }
 
     public final static class DownloadAllItems extends AsyncTask<String, Void,  List<Map<String, ?>>> {
@@ -423,12 +438,12 @@ public class RiotPortal {
         }
     }
 
-    public final static class GetSummonerID extends AsyncTask<String, Void, String> {
+    public final static class GetSummonerID extends AsyncTask<String, Void, HashMap<String, String>> {
 
         final GetSummonerIDListener getSummonerIDListener;
 
         public interface GetSummonerIDListener {
-            public void searchFinished(String response);
+            public void searchFinished(String id, String profileIcon, String level);
         }
 
         public GetSummonerID(GetSummonerIDListener listener) {
@@ -436,26 +451,36 @@ public class RiotPortal {
         }
 
         @Override
-        protected String doInBackground(String... name) {
+        protected HashMap<String, String> doInBackground(String... name) {
             String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(getSummonerIDURL(name[0]) + APIKey1);
 
+            HashMap hash = new HashMap();
+
             String id = "";
+            String profileIconID = "";
+            String level = "";
 
             try {
                 JSONObject jsonObject = new JSONObject(returnJSON);
                 id = jsonObject.getString("id");
+                profileIconID = jsonObject.getString("profileIconId");
+                level = jsonObject.getString("summonerLevel");
+
+                hash.put("accountID", id);
+                hash.put("profileIconID", profileIconID);
+                hash.put("summonerLevel", level);
             }
             catch(Exception e) {
                 Log.d("Exception", e.toString());
             }
 
-            return id;
+            return hash;
         }
 
         @Override
-        protected void onPostExecute(String id) {
+        protected void onPostExecute(HashMap<String, String> hash) {
             if (getSummonerIDListener != null) {
-                getSummonerIDListener.searchFinished(id);
+                getSummonerIDListener.searchFinished(hash.get("accountID"), hash.get("profileIconID"), hash.get("summonerLevel"));
             }
         }
     }
@@ -541,7 +566,7 @@ public class RiotPortal {
                         trinketID = gameStatsObject.getString("item6");
                     }
 
-                    if (gameStatsObject.has("championsKilles")) {
+                    if (gameStatsObject.has("championsKilled")) {
                         numKills = gameStatsObject.getString("championsKilled");
                     }
 
@@ -605,10 +630,99 @@ public class RiotPortal {
             for (int x = 0; x < list.getSize(); x++) {
                 HashMap item = (HashMap) ((HashMap) list.getItem(x)).clone();
                 mL.add(item);
-            }
-            t.test();*/
+            }*/
+            //t.test();
             //adapterRef.get().notifyDataSetChanged();
 
+        }
+    }
+
+    public final static class GetLeaguesInfo extends AsyncTask<String, Void, String> {
+        WeakReference<TextView> rankRef;
+        WeakReference<ImageView> rankImageRef;
+
+        public GetLeaguesInfo(TextView rank, ImageView rankImage) {
+            rankRef = new WeakReference<TextView>(rank);
+            rankImageRef = new WeakReference<ImageView>(rankImage);
+        }
+
+
+        @Override
+        protected String doInBackground(String... id) {
+
+            String returnJSON = MyUtility.downloadJSONusingHTTPGetRequest(getLeaguesURL(id[0]) + APIKey1);
+            String league = "";
+            try {
+                JSONObject jsonObject = new JSONObject(returnJSON);
+
+                JSONArray mainArray = jsonObject.getJSONArray(id[0]);
+
+                JSONObject leagueObj = mainArray.getJSONObject(0);
+
+                league = leagueObj.getString("tier");
+
+                JSONArray entriesObj = leagueObj.getJSONArray("entries");
+
+                for (int x = 0; x < entriesObj.length(); x++) {
+                    JSONObject obj = entriesObj.getJSONObject(x);
+
+                    if (obj.getString("playerOrTeamId").equals(id[0])) {
+                        league += " " + obj.getString("division");
+                    }
+                }
+
+            }
+            catch(Exception e) {
+                Log.d("Exception", e.toString());
+                league = "UNRANKED";
+            }
+
+            return league;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (s.contains("BRONZE"))
+                rankImageRef.get().setImageResource(R.drawable.bronze);
+            else if (s.contains("SILVER"))
+                rankImageRef.get().setImageResource(R.drawable.silver);
+            else if (s.contains("GOLD"))
+                rankImageRef.get().setImageResource(R.drawable.gold);
+            else if (s.contains("PLATINUM"))
+                rankImageRef.get().setImageResource(R.drawable.platinum);
+            else if (s.contains("DIAMOND"))
+                rankImageRef.get().setImageResource(R.drawable.platinum);
+            else if (s.contains("MASTER"))
+                rankImageRef.get().setImageResource(R.drawable.master);
+            else if (s.contains("CHALLENGER"))
+                rankImageRef.get().setImageResource(R.drawable.challenger);
+            else
+                rankImageRef.get().setImageResource(R.drawable.provisional);
+            rankRef.get().setText(s);
+            super.onPostExecute(s);
+        }
+    }
+
+    public final static class UpdateVersion extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String versionJSON = MyUtility.downloadJSONusingHTTPGetRequest(LatestVersionURL+APIKey1);
+
+            try {
+                JSONArray jsonVersion = new JSONArray(versionJSON);
+                return jsonVersion.getString(0);
+            }
+            catch(Exception e) {
+                Log.d("Exception", e.toString());
+            }
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            DDragonVer = s;
         }
     }
 

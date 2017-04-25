@@ -10,6 +10,8 @@
     <color name="dividerColor">#BDBDBD</color>
     <color name="black">#000000</color>
     <color name="test">#FFFFFF</color>
+    <color name="winColor">#A0DEB3</color>
+    <color name="loseColor">#E4A0A0</color>
 
 </resources>
 
