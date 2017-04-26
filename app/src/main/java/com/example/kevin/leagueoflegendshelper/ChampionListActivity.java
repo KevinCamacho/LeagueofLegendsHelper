@@ -2,6 +2,7 @@ package com.example.kevin.leagueoflegendshelper;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.transition.Fade;
@@ -27,6 +28,7 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
     private Toolbar toolBar;
     private TextView toolBarTitle;
     private DrawerLayout drawerLayout;
+    private AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,8 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
 
 
         setContentView(R.layout.activity_champion_list);
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 
         toolBar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolBar);
@@ -111,7 +115,9 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
         //champFrag.setEnterTransition(new Fade(Fade.IN));
         //champFrag.setExitTransition(new Fade(Fade.OUT));
 
-        Log.d("test", "Activity: " + name + " was clicked.");
+        appBarLayout.setExpanded(true);
+
+        //Log.d("test", "Activity: " + name + " was clicked.");
         getSupportFragmentManager().beginTransaction()//.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                 .replace(R.id.frameLayout, champFrag)
                 .addToBackStack(null).commit();

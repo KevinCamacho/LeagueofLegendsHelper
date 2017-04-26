@@ -2,6 +2,8 @@ package com.example.kevin.leagueoflegendshelper;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,6 +32,7 @@ public class ItemListActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private FrameLayout frameLayout;
     private Stack<String> titleStack = new Stack<>();
+    private AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class ItemListActivity extends AppCompatActivity
         setContentView(R.layout.activity_item_list);
 
         frameLayout = (FrameLayout) findViewById(R.id.frameLayout);
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 
         toolBar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolBar);
@@ -119,6 +124,8 @@ public class ItemListActivity extends AppCompatActivity
         itemFrag.setEnterTransition(new Slide(Gravity.RIGHT));
         itemFrag.setExitTransition(new Slide(Gravity.LEFT));
         itemFrag.setSharedElementReturnTransition(new DetailsTransition());
+
+        appBarLayout.setExpanded(true);
 
         getSupportFragmentManager().beginTransaction()
                 .addSharedElement(v, "itemDetailTrans" + item.get("id"))
