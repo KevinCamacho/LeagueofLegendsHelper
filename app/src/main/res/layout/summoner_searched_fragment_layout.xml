@@ -1,39 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_below="@+id/summonerName"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:id="@+id/profileIcon" />
-
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:id="@+id/summonerName"
-        android:layout_below="@+id/profileIcon"/>
+        android:id="@+id/infoTable">
 
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/rankIcon"
-        android:layout_marginLeft="50dp"
-        android:layout_toRightOf="@+id/summonerName"/>
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/profileIcon" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rankLabel"
-        android:layout_alignStart="@+id/rankIcon"
-        android:layout_below="@+id/rankIcon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24dp"
+            android:id="@+id/summonerName"
+            android:layout_below="@+id/profileIcon"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/matchRV"
-        android:layout_below="@+id/summonerName">
-    </android.support.v7.widget.RecyclerView>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/rankIcon"
+            android:layout_marginLeft="50dp"
+            android:layout_toRightOf="@+id/summonerName"/>
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rankLabel"
+            android:layout_alignStart="@+id/rankIcon"
+            android:layout_below="@+id/rankIcon"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/matchRV"
+            android:layout_below="@+id/summonerName">
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+
+
+</FrameLayout>

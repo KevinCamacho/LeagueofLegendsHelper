@@ -88,6 +88,7 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
             getSupportFragmentManager().beginTransaction().remove(sumFrag).commit();
         }
         searchLabel.setText("Search for a summoner to begin");
+        toolBarTitle.setText("Summoner Search");
         super.onResume();
     }
 
@@ -205,5 +206,7 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, sumFrag).commit();
         searchLabel.setText("");
+        searchMenuItem.collapseActionView();
+        toolBarTitle.setText(searchedForSum);
     }
 }
