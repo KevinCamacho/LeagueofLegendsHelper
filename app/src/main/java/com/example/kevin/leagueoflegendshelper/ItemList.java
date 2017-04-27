@@ -36,5 +36,18 @@ public class ItemList {
         return index;
     }
 
+    public static int findFirst(String name) {
+        int index = -1;
+
+        for (int x = 0; x < getSize(); x ++) {
+            String currName = getItem(x).get("name").toString();
+            if (currName.contains(name)) {
+                index = x;
+                return index;
+            }
+        }
+
+        return index;
+    }
 
 }
