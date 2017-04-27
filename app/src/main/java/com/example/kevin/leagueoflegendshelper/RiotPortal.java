@@ -208,7 +208,7 @@ public class RiotPortal {
                     //adapterReference.get().notifyItemInserted(refList.size()-1);
 
 
-                    Log.d("test", "ID: " + id);
+                    //Log.d("test", "ID: " + id);
                     //Log.d("test", "Name: " + name);
                     //Log.d("test", "Total Gold: " + totalGold);
                     //Log.d("test", "ImageLink: " + imageLink);
