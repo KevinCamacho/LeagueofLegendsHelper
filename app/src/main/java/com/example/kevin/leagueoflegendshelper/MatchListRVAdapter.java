@@ -49,28 +49,13 @@ public class MatchListRVAdapter extends RecyclerView.Adapter<MatchListRVAdapter.
     public void onBindViewHolder(MatchViewHolder holder, int position) {
 
         HashMap match = (HashMap) matchList.getItem(position);
-        //if ( !((String) match.get("item1")).equals("-1")) {
-            Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item1ID") + ".png").into(holder.item1);
-       // }
-       // if ( !((String) match.get("item2")).equals("-1")) {
-            Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item2ID") + ".png").into(holder.item2);
-       // }
-       // if ( !((String) match.get("item3")).equals("-1")) {
-            Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item3ID") + ".png").into(holder.item3);
-      //  }
-      //  if ( !((String) match.get("item4")).equals("-1")) {
-            Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item4ID") + ".png").into(holder.item4);
-      //  }
-      //  if ( !((String) match.get("item5")).equals("-1")) {
-            Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item5ID") + ".png").into(holder.item5);
-       // }
-       // if ( !((String) match.get("item6")).equals("-1")) {
-            Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item6ID") + ".png").into(holder.item6);
-       // }
-       // if ( !((String) match.get("trinket")).equals("-1")) {
-            Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("trinketID") + ".png").into(holder.trinket);
-       // }
-
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item1ID") + ".png").into(holder.item1);
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item2ID") + ".png").into(holder.item2);
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item3ID") + ".png").into(holder.item3);
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item4ID") + ".png").into(holder.item4);
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item5ID") + ".png").into(holder.item5);
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("item6ID") + ".png").into(holder.item6);
+        Picasso.with(context).load(RiotPortal.getItemImageURL() + match.get("trinketID") + ".png").into(holder.trinket);
         Picasso.with(context).load(RiotPortal.getChampImageURL() + match.get("imageLink")).into(holder.playedChamp);
 
         switch((String) match.get("win")) {

@@ -2,96 +2,193 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true"
         android:id="@+id/matchRVCard">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="6">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/winOrLose"
-                android:text="VICTORY"/>
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_below="@+id/winOrLose"
-                android:id="@+id/playedChampPic"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/winOrLose"
-                android:text="Kills/Deaths/Assists"
-                android:paddingLeft="5dp"
-                android:id="@+id/kdaLabel"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/winOrLose"
+                    android:text="VICTORY"
+                    android:gravity="center_horizontal"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/kdaLabel"
-                android:layout_alignStart="@+id/kdaLabel"
-                android:id="@+id/kda"
-                android:text="3/4/5"
-                android:paddingLeft="40dp"/>
+                <android.support.percent.PercentRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/winOrLose">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/item1"
-                android:layout_toRightOf="@+id/kdaLabel"/>
+                    <ImageView
+                        app:layout_widthPercent="100%"
+                        app:layout_aspectRatio="100%"
+                        android:src="@drawable/challenger"
+                        android:id="@+id/playedChampPic"/>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/item2"
-                android:layout_toRightOf="@+id/item1"/>
+                </android.support.percent.PercentRelativeLayout>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/item3"
-                android:layout_toRightOf="@+id/item2"/>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/item4"
-                android:layout_below="@+id/item1"
-                android:layout_alignStart="@+id/item1"/>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/item5"
-                android:layout_below="@+id/item2"
-                android:layout_alignStart="@+id/item2"/>
+            </RelativeLayout>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/item6"
-                android:layout_below="@+id/item3"
-                android:layout_alignStart="@+id/item3"/>
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:id="@+id/trinket"
-                android:layout_toRightOf="@+id/item3"
-                android:layout_alignTop="@+id/item3"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
-        </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="K/D/A"
+                        android:id="@+id/kdaLabel"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:layout_below="@+id/kdaLabel"
+                        android:id="@+id/kda"
+                        android:text="3/4/5"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <android.support.percent.PercentRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_margin="2dp"
+                            app:layout_widthPercent="100%"
+                            app:layout_aspectRatio="100%"
+                            android:id="@+id/item1"/>
+
+                        <ImageView
+                            android:layout_margin="2dp"
+                            app:layout_widthPercent="100%"
+                            app:layout_aspectRatio="100%"
+                            android:id="@+id/item4"
+                            android:layout_below="@+id/item1"/>
+
+                    </android.support.percent.PercentRelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <android.support.percent.PercentRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_margin="2dp"
+                            app:layout_widthPercent="100%"
+                            app:layout_aspectRatio="100%"
+                            android:id="@+id/item2"/>
+
+                        <ImageView
+                            android:layout_margin="2dp"
+                            app:layout_widthPercent="100%"
+                            app:layout_aspectRatio="100%"
+                            android:id="@+id/item5"
+                            android:layout_below="@+id/item2"/>
+
+                    </android.support.percent.PercentRelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <android.support.percent.PercentRelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_margin="2dp"
+                            app:layout_widthPercent="100%"
+                            app:layout_aspectRatio="100%"
+                            android:id="@+id/item3"/>
+
+                        <ImageView
+                            android:layout_margin="2dp"
+                            app:layout_widthPercent="100%"
+                            app:layout_aspectRatio="100%"
+                            android:id="@+id/item6"
+                            android:layout_below="@+id/item3"/>
+
+                    </android.support.percent.PercentRelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <android.support.percent.PercentFrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_margin="2dp"
+                            app:layout_widthPercent="100%"
+                            app:layout_aspectRatio="100%"
+                            android:id="@+id/trinket"/>
+
+                    </android.support.percent.PercentFrameLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
