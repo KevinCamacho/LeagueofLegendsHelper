@@ -68,7 +68,7 @@ public class ChampionLoreDetailFragment extends Fragment {
     private void populateFields() {
         champName.setText(loreHash.get("name").toString());
         champTitle.setText(loreHash.get("title").toString());
-        champLore.setText(loreHash.get("lore").toString());
+        champLore.setText(loreHash.get("lore").toString() + "\n\n");
 
         Picasso.with(getContext()).load(RiotPortal.getChampImageURL() + loreHash.get("imageLink")).into(champImage);
     }

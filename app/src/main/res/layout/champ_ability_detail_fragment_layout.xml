@@ -1,37 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
-    <ImageView
-        android:layout_width="100dip"
-        android:layout_height="100dip"
-        android:id="@+id/abilityImage"/>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="2dp"
+        app:cardUseCompatPadding="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/abilityName"
-        android:layout_toRightOf="@+id/abilityImage"
-        android:layout_alignTop="@+id/abilityImage"
-        android:textSize="36dp"
-        android:text="Piltover Peacemaker"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp">
 
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/abilityImage"
-        android:id="@+id/scrollView"
-        android:scrollbars="vertical"
-        android:fillViewport="true">
+            <ImageView
+                android:layout_width="100dip"
+                android:layout_height="100dip"
+                android:id="@+id/abilityImage"/>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/abilityDescription"
-            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-            android:textSize="20dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/abilityName"
+                android:layout_toRightOf="@+id/abilityImage"
+                android:layout_alignTop="@+id/abilityImage"
+                android:textSize="36dp"
+                android:text="Piltover Peacemaker"/>
 
-    </ScrollView>
+            <ScrollView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/abilityImage"
+                android:id="@+id/scrollView"
+                android:scrollbars="vertical"
+                android:fillViewport="true">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/abilityDescription"
+                    android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    android:textSize="20dp"/>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+
+
+    </android.support.v7.widget.CardView>
+
+
 
 </RelativeLayout>
