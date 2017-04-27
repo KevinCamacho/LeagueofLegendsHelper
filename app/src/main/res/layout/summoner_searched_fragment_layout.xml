@@ -1,51 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_below="@+id/summonerName"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/infoTable">
 
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:id="@+id/profileIcon" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24dp"
-            android:id="@+id/summonerName"
-            android:layout_below="@+id/profileIcon"/>
+            app:cardUseCompatPadding="false"
+            app:cardElevation="2dp"
+            android:id="@+id/card">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/rankIcon"
-            android:layout_marginLeft="50dp"
-            android:layout_toRightOf="@+id/summonerName"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/informationCard"
+                android:layout_margin="4dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rankLabel"
-            android:layout_alignStart="@+id/rankIcon"
-            android:layout_below="@+id/rankIcon"/>
+                <ImageView
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:id="@+id/profileIcon"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24dp"
+                    android:id="@+id/summonerName"
+                    android:layout_below="@+id/profileIcon"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rankLabel"
+                    android:layout_alignBaseline="@+id/summonerName"
+                    android:textSize="18dp"
+                    android:layout_alignParentEnd="true"/>
+
+                <ImageView
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:id="@+id/rankIcon"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
 
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/matchRV"
-            android:layout_below="@+id/summonerName">
+            android:layout_below="@+id/card">
         </android.support.v7.widget.RecyclerView>
 
-    </RelativeLayout>
 
-
-
-</FrameLayout>
+</RelativeLayout>
