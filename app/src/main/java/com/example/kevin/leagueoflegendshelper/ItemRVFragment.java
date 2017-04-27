@@ -37,6 +37,8 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
 
     private MenuItem searchMenuItem;
     private SearchView searchView;
+
+    private String lastQuery = "";
     //private List<Map<String, ?>> itemList;
 
     private ItemRVCardClickListener itemRVClicked;
@@ -95,29 +97,14 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
 
         searchView.setOnQueryTextListener(this);
 
-        /*searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-                                                     @Override
-                                                     public boolean onMenuItemActionExpand(MenuItem item) {
-                                                         Log.d("CLICK", "Search Action collapsed");
-                                                         ItemList.restoreList();
-                                                         itemAdapter.notifyDataSetChanged();
-                                                         return true;
-                                                     }
-
-                                                     @Override
-                                                     public boolean onMenuItemActionCollapse(MenuItem item) {
-                                                         Log.d("CLICK", "Search Action expanded");
-                                                         return true;
-                                                     }
-                                                 });*/
-
-
                 MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
                     @Override
                     public boolean onMenuItemActionCollapse(MenuItem item) {
+                        lastQuery = "";
                         Log.d("CLICK", "Search Action collapsed");
                         ItemList.restoreList();
                         itemAdapter.notifyDataSetChanged();
+                        //Log.d("test", "Size of ItemList after collapse " + ItemList.getSize());
                         return true;
                     }
 
@@ -135,29 +122,23 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        int position = ItemList.findMatching(query);
         //Log.d("test", "Returned position: " + position);
 
-        switch (position) {
-            case -1:
-                break;
-            default:
-                itemAdapter.notifyDataSetChanged();
-                break;
+        if (!lastQuery.equals(query)) {
+            lastQuery = query;
+            int position = ItemList.findMatching(query);
+            switch (position) {
+                case -1:
+                    break;
+                default:
+                    itemAdapter.notifyDataSetChanged();
+                    break;
+            }
+
+            getActivity().getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         }
-        /*for (Map<String, ?> item : ItemList.getList()) {
-            Log.d("test", item.get("name").toString());
-        }*/
-        //searchMenuItem.collapseActionView();
 
-        getActivity().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-        /*View v = this.getActivity().getCurrentFocus();
-        if (v != null) {
-            InputMethodManager imm = (InputMethodManager) this.get(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }*/
 
         return false;
     }
@@ -171,7 +152,22 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     @Override
     public void itemImageClicked(View view, int position) {
 
-        itemRVClicked.itemRVClicked(view, position);
+        String id = ItemList.getItem(position).get("id").toString();
+
+        ItemList.restoreList();
+        itemAdapter.notifyDataSetChanged();
+
+        int index = ItemList.getIndexOf(id);
+        try {
+            rV.scrollToPosition(index+5);
+        }
+        catch(Exception e) {
+            rV.scrollToPosition(index);
+        }
+
+        searchMenuItem.collapseActionView();
+
+        itemRVClicked.itemRVClicked(view, index);
 
     }
 }

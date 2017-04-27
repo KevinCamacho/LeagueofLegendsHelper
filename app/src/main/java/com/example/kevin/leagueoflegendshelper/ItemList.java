@@ -48,9 +48,7 @@ public class ItemList {
 
         name.toLowerCase();
 
-        ArrayList<Integer> indices = new ArrayList<>();
-
-        Log.d("test", "Size of itemlist " + getSize());
+        //Log.d("test", "Size of itemlist " + getSize());
 
         for (int x = 0; x < getSize(); x ++) {
 
@@ -72,29 +70,26 @@ public class ItemList {
             //Log.d("test", matcher.matches() + "\t" + currName);
 
             if (matcher.matches()) {
-                Log.d("test", "Keeping " + currName);
+                //Log.d("test", "Keeping " + currName);
             }
             else {
                 //Log.d("test", "Removing" + currName);
                 getList().remove(x);
                 //Log.d("test", "Size of ItemList " + getSize());
 
-                indices.add(x);
                 x--;
                 index++;
             }
         }
 
 
-        Log.d("test", "Size of copyList " + copyList.size() + "\n" + " size of itemlist " + getSize());
-        /*for (int x : indices) {
-            getList().remove(x);
-        }*/
+        //Log.d("test", "Size of copyList " + copyList.size() + "\n" + " size of itemlist " + getSize());
 
         return index;
     }
 
     public static void restoreList() {
+
 
         if (copyList.isEmpty())
             return;
@@ -107,6 +102,8 @@ public class ItemList {
         }
 
         copyList.clear();
+
+
 
     }
 

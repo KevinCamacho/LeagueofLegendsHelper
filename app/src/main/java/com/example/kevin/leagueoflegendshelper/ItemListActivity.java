@@ -112,7 +112,11 @@ public class ItemListActivity extends AppCompatActivity
     public void itemRVClicked(View v, int position) {
         Log.d("test", "Activity: " + ItemList.getItem(position).get(("id")) + " " + ItemList.getItem(position).get("name") + " was clicked");
 
+
         titleStack.push((String) toolBarTitle.getText());
+
+
+
         //Log.d("test", "Title stack: " + titleStack.toString());
         HashMap<String, ?> item = (HashMap) ItemList.getItem(position);
         String itemName = (String) item.get("name");
