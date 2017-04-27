@@ -12,6 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
+import com.ToxicBakery.viewpager.transforms.StackTransformer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +67,11 @@ public class ChampionDetailFragment extends Fragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tab_Layout);
 
         adapter = new ChampStatePagerAdapter(getChildFragmentManager());
+
+
+        //viewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.champOverheadlayout));
+        viewPager.setPageTransformer(true, new StackTransformer());
+
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
 
