@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -21,6 +22,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Stack;
 
 public class SummonerSearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
                                                          SearchView.OnQueryTextListener,
@@ -42,6 +45,12 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
     private String searchedForSumProfileIconID;
     private String searchedForSumLevel;
 
+    private AppBarLayout appBarLayout;
+
+    private String lastQuery = "";
+
+    private Stack<String> titleStack = new Stack<>();
+
     private SummonerSearchedFragment sumFrag;
 
 
@@ -56,6 +65,8 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
         toolBar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 
 
         searchLabel = (TextView) findViewById(R.id.searchLabel);
@@ -142,6 +153,18 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
 
     @Override
     public void onBackPressed() {
+        //getSupportFragmentManager().popBackStack();
+        appBarLayout.setExpanded(true);
+        if (titleStack.size() > 0) {
+            toolBarTitle.setText(titleStack.pop());
+        }
+        else {
+            toolBarTitle.setText("Summoner Search");
+        }
+
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+            searchLabel.setText("Search for a summoner to begin");
+        }
 
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -174,14 +197,18 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        searchedForSum = query;
-        RiotPortal.GetSummonerID downloader = new RiotPortal.GetSummonerID(this);
-        downloader.execute(query);
 
-        View v = this.getWindow().getCurrentFocus();
-        if (v != null) {
-            InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        if (!lastQuery.equals(query)) {
+            lastQuery = query;
+            searchedForSum = query;
+            RiotPortal.GetSummonerID downloader = new RiotPortal.GetSummonerID(this);
+            downloader.execute(query);
+
+            View v = this.getWindow().getCurrentFocus();
+            if (v != null) {
+                InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
         }
 
         return true;
@@ -198,15 +225,24 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
         searchedForSumProfileIconID = profileID;
         searchedForSumLevel = level;
 
+        titleStack.push(toolBarTitle.getText().toString());
+        toolBarTitle.setText(searchedForSum);
+
+        Log.d("test", titleStack.toString());
+
+
         Log.d("test", "Summoner ID for " + searchedForSum + " = " + searchedForSumID);
+
+        lastQuery = "";
+
+        appBarLayout.setExpanded(true);
 
         sumFrag = SummonerSearchedFragment
                 .newInstance(searchedForSum, searchedForSumID, searchedForSumProfileIconID, searchedForSumLevel);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frameLayout, sumFrag).commit();
+                .replace(R.id.frameLayout, sumFrag).addToBackStack(null).commit();
         searchLabel.setText("");
         searchMenuItem.collapseActionView();
-        toolBarTitle.setText(searchedForSum);
     }
 }

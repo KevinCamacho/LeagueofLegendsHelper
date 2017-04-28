@@ -69,7 +69,11 @@
                     android:layout_height="wrap_content"
                     android:text="Search for a summoner to begin"
                     android:textSize="36dp"
-                    android:paddingTop="10dp"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="100dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="center_vertical"
                     android:id="@+id/searchLabel"/>
 
             </FrameLayout>

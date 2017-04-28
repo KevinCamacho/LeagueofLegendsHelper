@@ -99,17 +99,20 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         Picasso.with(getContext()).load(RiotPortal.getProfileIconURL(summonerProfileIconID)).into(layoutProfileIcon);
 
+
         RiotPortal.GetLeaguesInfo dl = new RiotPortal.GetLeaguesInfo(layoutRankLabel, layoutRankIcon);
         dl.execute(summonerID);
 
+        if (matchList == null) {
+            matchList = new MatchList();
+            matchAdapter = new MatchListRVAdapter(matchList, getContext());
+            RiotPortal.GetRecentMatches downloader = new RiotPortal.GetRecentMatches(matchList, matchAdapter, this);
+            //Log.d("test", "From SummonerSearchedFragment: SummonerID = " + summonerID);
+            downloader.execute(summonerID);
+        }
 
-        matchList = new MatchList();
 
-        matchAdapter = new MatchListRVAdapter(matchList, getContext());
 
-        RiotPortal.GetRecentMatches downloader = new RiotPortal.GetRecentMatches(matchList, matchAdapter, this);
-        Log.d("test", "From SummonerSearchedFragment: SummonerID = " + summonerID);
-        downloader.execute(summonerID);
 
 
         rV = (RecyclerView) view.findViewById(R.id.matchRV);
@@ -118,10 +121,10 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         lM = new LinearLayoutManager(getContext());
 
-        AlphaInAnimationAdapter rvAnimator = new AlphaInAnimationAdapter(matchAdapter);
-        rvAnimator.setFirstOnly(false);
+        //AlphaInAnimationAdapter rvAnimator = new AlphaInAnimationAdapter(matchAdapter);
+        //rvAnimator.setFirstOnly(false);
 
-        rV.setAdapter(rvAnimator);
+        rV.setAdapter(matchAdapter);
         rV.setLayoutManager(lM);
 
         rV.setItemAnimator(new SlideInLeftAnimator());
@@ -198,7 +201,7 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
     @Override
     public void doneDownloading() {
-        Log.d("test", matchList.getSize() + "");
+        //Log.d("test", matchList.getSize() + "");
 
         int numWins = 0;
         int numLoss = 0;
@@ -226,7 +229,7 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
         new DecimalFormat("#.##").format(kda);
         shareMessage = "In the past " + (numWins+numLoss) + " games, " + summonerName + " has won " + numWins + ", with a total of " + (int) totalKill + " kills, " + (int) totalDeath + " deaths, and " + (int) totalAssist + " assists, for a " + new DecimalFormat("#.##").format(kda) + "KDA.";
 
-        Log.d("test", shareMessage);
+        //Log.d("test", shareMessage);
 
         /*intentShare = new Intent(Intent.ACTION_SEND);
         intentShare.setType("text/plain");
