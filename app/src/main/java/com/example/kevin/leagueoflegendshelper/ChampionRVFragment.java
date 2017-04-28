@@ -1,7 +1,6 @@
 package com.example.kevin.leagueoflegendshelper;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 /**
  * Created by Kevin on 4/18/2017.

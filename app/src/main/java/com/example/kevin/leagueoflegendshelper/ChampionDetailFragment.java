@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,7 +67,6 @@ public class ChampionDetailFragment extends Fragment {
         adapter = new ChampStatePagerAdapter(getChildFragmentManager());
 
 
-        //viewPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.champOverheadlayout));
         viewPager.setPageTransformer(true, new StackTransformer());
 
         viewPager.setAdapter(adapter);
@@ -106,8 +103,6 @@ public class ChampionDetailFragment extends Fragment {
                 default:
                     return ChampionAbilityDetailFragment.newInstance((HashMap) champInfo.get(position), false);
             }
-            //return ItemDetailFragment.newInstance(1, "lul");
-            //return ChampionLoreDetailFragment.newInstance((HashMap) champInfo.get(0));
         }
 
         @Override
@@ -118,7 +113,6 @@ public class ChampionDetailFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             return ((HashMap) champInfo.get(position)).get("name").toString();
-            //return "test";
         }
     }
 }

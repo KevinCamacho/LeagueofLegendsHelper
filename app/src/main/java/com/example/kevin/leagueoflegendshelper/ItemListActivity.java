@@ -3,7 +3,6 @@ package com.example.kevin.leagueoflegendshelper;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -64,8 +63,6 @@ public class ItemListActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ItemRVFragment itemRVFrag = new ItemRVFragment();
-        //itemRVFrag.setEnterTransition(new Slide(Gravity.RIGHT));
-        //itemRVFrag.setExitTransition(new Slide(Gravity.LEFT));
         getSupportFragmentManager().beginTransaction()
                     .replace(R.id.frameLayout, itemRVFrag).commit();
     }

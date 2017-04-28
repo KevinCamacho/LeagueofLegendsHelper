@@ -2,9 +2,7 @@ package com.example.kevin.leagueoflegendshelper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.ShareActionProvider;
@@ -21,11 +19,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.Map;
 
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
@@ -116,13 +111,10 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
 
         rV = (RecyclerView) view.findViewById(R.id.matchRV);
-        //rV.setHasFixedSize(true);
 
 
         lM = new LinearLayoutManager(getContext());
 
-        //AlphaInAnimationAdapter rvAnimator = new AlphaInAnimationAdapter(matchAdapter);
-        //rvAnimator.setFirstOnly(false);
 
         rV.setAdapter(matchAdapter);
         rV.setLayoutManager(lM);
@@ -139,25 +131,6 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         inflater.inflate(R.menu.share_button_menu, menu);
 
-        /*shareItem = menu.findItem(R.id.action_Share);
-
-        if (shareItem == null) {
-            inflater.inflate(R.menu.share_button_menu, menu);
-            shareItem = menu.findItem(R.id.action_Share);
-        }
-
-        shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-
-        intentShare = new Intent(Intent.ACTION_SEND);
-        intentShare.setType("text/plain");
-        intentShare.putExtra(Intent.EXTRA_TEXT, shareMessage);
-
-
-
-        if (shareProvider != null && intentShare != null) {
-            shareProvider.setShareIntent(intentShare);
-        }*/
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -169,16 +142,6 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
 
                 //Log.d("test", "Wins: " + numWins + "\nDefeats: " + numLoss + "\nKills: " + totalKill + "\nDeaths: " + totalDeath + "\nAssists: " + totalAssist + "\nKDA: " + kda + "\n");
-
-                /*intentShare = new Intent(Intent.ACTION_SEND);
-                intentShare.setType("text/plain");
-                intentShare.putExtra(Intent.EXTRA_TEXT, shareMessage);
-
-
-
-                if (shareProvider != null && intentShare != null) {
-                    shareProvider.setShareIntent(intentShare);
-                }*/
 
                 actionShare(shareMessage);
 
@@ -192,8 +155,6 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
     @Override
     public void onResume() {
-        /*matchList.getList().clear();
-        matchAdapter.notifyDataSetChanged();*/
         super.onResume();
     }
 
@@ -228,18 +189,6 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
         double kda =  (totalKill + totalAssist) / totalDeath;
         new DecimalFormat("#.##").format(kda);
         shareMessage = "In the past " + (numWins+numLoss) + " games, " + summonerName + " has won " + numWins + ", with a total of " + (int) totalKill + " kills, " + (int) totalDeath + " deaths, and " + (int) totalAssist + " assists, for a " + new DecimalFormat("#.##").format(kda) + "KDA.";
-
-        //Log.d("test", shareMessage);
-
-        /*intentShare = new Intent(Intent.ACTION_SEND);
-        intentShare.setType("text/plain");
-        intentShare.putExtra(Intent.EXTRA_TEXT, shareMessage);
-
-
-
-        if (shareProvider != null && intentShare != null) {
-            shareProvider.setShareIntent(intentShare);
-        }*/
 
 
 

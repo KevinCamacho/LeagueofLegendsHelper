@@ -1,6 +1,5 @@
 package com.example.kevin.leagueoflegendshelper;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -20,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Stack;
@@ -95,11 +93,6 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
         if (searchMenuItem != null) {
             searchMenuItem.collapseActionView();
         }
-        /*if (sumFrag != null) {
-            getSupportFragmentManager().beginTransaction().remove(sumFrag).commit();
-        }
-        searchLabel.setText("Search for a summoner to begin");
-        toolBarTitle.setText("Summoner Search");*/
         super.onResume();
     }
 
@@ -111,14 +104,6 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
         searchView = (SearchView) searchMenuItem.getActionView();
 
         searchView.setOnQueryTextListener(this);
-
-        /*final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_Search));
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));*/
-
-//        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_Search));
-//        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         MenuItemCompat.OnActionExpandListener expandListener = new MenuItemCompat.OnActionExpandListener() {
             @Override
@@ -134,7 +119,6 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
             }
         };
 
-        //MenuItemCompat.setOnActionExpandListener(searchMenuItem, expandListener);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -153,7 +137,6 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
 
     @Override
     public void onBackPressed() {
-        //getSupportFragmentManager().popBackStack();
         appBarLayout.setExpanded(true);
         if (titleStack.size() > 0) {
             toolBarTitle.setText(titleStack.pop());

@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentTransaction;
-import android.transition.Fade;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,11 +58,7 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
         ChampionRVFragment champRVFrag = new ChampionRVFragment();
         champRVFrag.setEnterTransition(new Slide(Gravity.RIGHT));
         champRVFrag.setExitTransition(new Slide(Gravity.LEFT));
-        //champRVFrag.setEnterTransition(new Slide(Gravity.LEFT));
-        //champRVFrag.setExitTransition(new Slide(Gravity.RIGHT));
-        //champRVFrag.setEnterTransition(new Fade(Fade.IN));
-        //champRVFrag.setExitTransition(new Fade(Fade.OUT));
-        getSupportFragmentManager().beginTransaction()//.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, champRVFrag).commit();
     }
 
@@ -110,15 +102,11 @@ public class ChampionListActivity extends AppCompatActivity implements Navigatio
 
 
         ChampionDetailFragment champFrag = ChampionDetailFragment.newInstance(position);
-        //champFrag.setEnterTransition(new Slide(Gravity.RIGHT));
-        //champFrag.setExitTransition(new Slide(Gravity.LEFT));
-        //champFrag.setEnterTransition(new Fade(Fade.IN));
-        //champFrag.setExitTransition(new Fade(Fade.OUT));
 
         appBarLayout.setExpanded(true);
 
         //Log.d("test", "Activity: " + name + " was clicked.");
-        getSupportFragmentManager().beginTransaction()//.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameLayout, champFrag)
                 .addToBackStack(null).commit();
     }

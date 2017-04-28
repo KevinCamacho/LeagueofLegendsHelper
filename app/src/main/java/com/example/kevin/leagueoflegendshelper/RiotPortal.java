@@ -1,6 +1,5 @@
 package com.example.kevin.leagueoflegendshelper;
 
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -178,7 +176,6 @@ public class RiotPortal {
                         JSONObject imageObject = currItem.getJSONObject("image");
                         imageLink = imageObject.getString("full");
 
-                        //image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+imageLink);
 
                     }
 
@@ -195,17 +192,12 @@ public class RiotPortal {
                     itemHash.put("name", name);
                     itemHash.put("description", description);
                     itemHash.put("imageLink", imageLink);
-                    //itemHash.put("image", image);
                     itemHash.put("totalGold", totalGold);
                     itemHash.put("combineGold", combineGold);
                     itemHash.put("from", fromArray);
                     itemHash.put("into", intoArray);
 
                     downloadedList.add(itemHash);
-
-                    //List<Map<String, ?>> refList = itemListReference.get();
-                    //refList.add((HashMap)itemHash.clone());
-                    //adapterReference.get().notifyItemInserted(refList.size()-1);
 
 
                     //Log.d("test", "ID: " + id);
@@ -600,7 +592,6 @@ public class RiotPortal {
                     currGame.put("item6ID", item6ID);
                     currGame.put("trinketID", trinketID);
 
-                    //matchList.getList().add(currGame);
                     publishProgress(currGame);
 
                 }
@@ -625,16 +616,6 @@ public class RiotPortal {
         protected void onPostExecute(MatchList list) {
 
             t.doneDownloading();
-
-            /*MatchList mL = matchListRef.get();
-
-
-            for (int x = 0; x < list.getSize(); x++) {
-                HashMap item = (HashMap) ((HashMap) list.getItem(x)).clone();
-                mL.add(item);
-            }*/
-            //t.test();
-            //adapterRef.get().notifyDataSetChanged();
 
         }
     }

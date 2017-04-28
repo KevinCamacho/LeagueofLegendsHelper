@@ -1,12 +1,10 @@
 package com.example.kevin.leagueoflegendshelper;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -17,15 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 /**
  * Created by Kevin on 4/11/2017.
@@ -42,7 +33,6 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     private SearchView searchView;
 
     private String lastQuery = "";
-    //private List<Map<String, ?>> itemList;
 
     private ItemRVCardClickListener itemRVClicked;
 
@@ -64,14 +54,11 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.item_rv_fragment_layout, container, false);
 
-        //itemList = new ArrayList<Map<String,?>>();
-
         setHasOptionsMenu(true);
 
         rV = (RecyclerView) view.findViewById(R.id.itemRV);
         rV.setHasFixedSize(true);
 
-        //lM = new LinearLayoutManager(view.getContext());
         lM = new GridLayoutManager(view.getContext(), 4);
 
 

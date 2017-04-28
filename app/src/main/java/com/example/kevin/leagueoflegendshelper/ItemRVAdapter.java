@@ -1,7 +1,6 @@
 package com.example.kevin.leagueoflegendshelper;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,15 +46,6 @@ public class ItemRVAdapter extends RecyclerView.Adapter<ItemRVAdapter.ItemViewHo
 
 
         Picasso.with(context).load(RiotPortal.getItemImageURL() + item.get("imageLink")).into(holder.itemImage);
-
-        //imageDownloader = new RiotPortal.DownloadItemImage(holder.itemImage);
-        //imageDownloader.execute(item.get("imageLink").toString());
-
-        //holder.itemImage.setImageBitmap((Bitmap) item.get("image"));
-
-        //image = MyUtility.downloadImageusingHTTPGetRequest(ItemImageURL+item.get("imageLink"));
-
-        //holder.itemImage.setImageBitmap(image);
 
         holder.itemImage.setTransitionName("itemTrans" + position);
     }
