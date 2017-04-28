@@ -1,6 +1,7 @@
 package com.example.kevin.leagueoflegendshelper;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 /**
  * Created by Kevin on 4/18/2017.
@@ -66,7 +70,10 @@ public class ChampionRVFragment extends Fragment implements ChampionRVAdapter.Ch
 
         rV.setLayoutManager(lM);
 
-        rV.setAdapter(champAdapter);
+        AlphaInAnimationAdapter rvAnimator = new AlphaInAnimationAdapter(champAdapter);
+        rvAnimator.setFirstOnly(false);
+
+        rV.setAdapter(rvAnimator);
 
         if (ChampionList.getSize() == 0) {
             RiotPortal.DownloadAllChampions downloader = new RiotPortal.DownloadAllChampions((ChampionRVAdapter) champAdapter, ChampionList.getList());

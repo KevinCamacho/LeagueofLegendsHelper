@@ -33,4 +33,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.xgc1986.android:parallaxpagertransformer:1.0.4'
     compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.6'
 }

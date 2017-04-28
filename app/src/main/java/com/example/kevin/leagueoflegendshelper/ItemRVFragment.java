@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
+
 /**
  * Created by Kevin on 4/11/2017.
  */
@@ -76,7 +79,10 @@ public class ItemRVFragment extends Fragment implements ItemRVAdapter.ItemClickL
 
         rV.setLayoutManager(lM);
 
-        rV.setAdapter(itemAdapter);
+        AlphaInAnimationAdapter rvAnimator = new AlphaInAnimationAdapter(itemAdapter);
+        rvAnimator.setFirstOnly(false);
+
+        rV.setAdapter(rvAnimator);
 
         if (ItemList.getSize() == 0) {
             RiotPortal.DownloadAllItems downloader = new RiotPortal.DownloadAllItems((ItemRVAdapter) itemAdapter, ItemList.getList());

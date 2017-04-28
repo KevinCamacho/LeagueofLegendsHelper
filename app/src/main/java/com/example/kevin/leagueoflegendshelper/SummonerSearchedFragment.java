@@ -24,6 +24,10 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
+
 /**
  * Created by Kevin on 4/24/2017.
  */
@@ -114,8 +118,14 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         lM = new LinearLayoutManager(getContext());
 
-        rV.setAdapter(matchAdapter);
+        AlphaInAnimationAdapter rvAnimator = new AlphaInAnimationAdapter(matchAdapter);
+        rvAnimator.setFirstOnly(false);
+
+        rV.setAdapter(rvAnimator);
         rV.setLayoutManager(lM);
+
+        rV.setItemAnimator(new SlideInLeftAnimator());
+
 
 
         return view;
@@ -214,7 +224,7 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         double kda =  (totalKill + totalAssist) / totalDeath;
         new DecimalFormat("#.##").format(kda);
-        shareMessage = "In the past " + (numWins+numLoss) + " games, " + summonerName + " has won " + numWins + " games out of their last 10 with a total of " + (int) totalKill + " kills, " + (int) totalDeath + " deaths, and " + (int) totalAssist + " assists, for a " + new DecimalFormat("#.##").format(kda) + "KDA";
+        shareMessage = "In the past " + (numWins+numLoss) + " games, " + summonerName + " has won " + numWins + ", with a total of " + (int) totalKill + " kills, " + (int) totalDeath + " deaths, and " + (int) totalAssist + " assists, for a " + new DecimalFormat("#.##").format(kda) + "KDA.";
 
         Log.d("test", shareMessage);
 
