@@ -188,7 +188,7 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         double kda =  (totalKill + totalAssist) / totalDeath;
         new DecimalFormat("#.##").format(kda);
-        shareMessage = "In the past " + (numWins+numLoss) + " games, " + summonerName + " has won " + numWins + ", with a total of " + (int) totalKill + " kills, " + (int) totalDeath + " deaths, and " + (int) totalAssist + " assists, for a " + new DecimalFormat("#.##").format(kda) + "KDA.";
+        shareMessage = "In their past " + (numWins+numLoss) + " games, " + summonerName + " has won " + numWins + ", with a total of " + (int) totalKill + " kills, " + (int) totalDeath + " deaths, and " + (int) totalAssist + " assists, for a " + new DecimalFormat("#.##").format(kda) + "KDA.";
 
 
 
