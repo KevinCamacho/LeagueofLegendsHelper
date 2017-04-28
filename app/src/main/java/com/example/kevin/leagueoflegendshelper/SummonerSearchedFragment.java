@@ -1,18 +1,28 @@
 package com.example.kevin.leagueoflegendshelper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Kevin on 4/24/2017.
@@ -29,6 +39,13 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
     private TextView layoutSummonerName;
     private ImageView layoutRankIcon;
     private TextView layoutRankLabel;
+
+    private Intent intentShare;
+
+    private String shareMessage = "Oops! Something went wrong!";
+
+    private MenuItem shareItem;
+    private ShareActionProvider shareProvider;
 
     private MatchList matchList;
 
@@ -67,6 +84,8 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
 
         readBundle(getArguments());
 
+        setHasOptionsMenu(true);
+
         layoutProfileIcon = (ImageView) view.findViewById(R.id.profileIcon);
         layoutSummonerName = (TextView) view.findViewById(R.id.summonerName);
         layoutRankIcon = (ImageView) view.findViewById(R.id.rankIcon);
@@ -103,16 +122,120 @@ public class SummonerSearchedFragment extends Fragment implements RiotPortal.Get
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        inflater.inflate(R.menu.share_button_menu, menu);
+
+        /*shareItem = menu.findItem(R.id.action_Share);
+
+        if (shareItem == null) {
+            inflater.inflate(R.menu.share_button_menu, menu);
+            shareItem = menu.findItem(R.id.action_Share);
+        }
+
+        shareProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+
+        intentShare = new Intent(Intent.ACTION_SEND);
+        intentShare.setType("text/plain");
+        intentShare.putExtra(Intent.EXTRA_TEXT, shareMessage);
+
+
+
+        if (shareProvider != null && intentShare != null) {
+            shareProvider.setShareIntent(intentShare);
+        }*/
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("test", item.getItemId() + "");
+        switch (item.getItemId()) {
+            case R.id.action_Share:
+
+
+                //Log.d("test", "Wins: " + numWins + "\nDefeats: " + numLoss + "\nKills: " + totalKill + "\nDeaths: " + totalDeath + "\nAssists: " + totalAssist + "\nKDA: " + kda + "\n");
+
+                /*intentShare = new Intent(Intent.ACTION_SEND);
+                intentShare.setType("text/plain");
+                intentShare.putExtra(Intent.EXTRA_TEXT, shareMessage);
+
+
+
+                if (shareProvider != null && intentShare != null) {
+                    shareProvider.setShareIntent(intentShare);
+                }*/
+
+                actionShare(shareMessage);
+
+                Log.d("test", shareMessage);
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onResume() {
-        matchList.getList().clear();
-        matchAdapter.notifyDataSetChanged();
+        /*matchList.getList().clear();
+        matchAdapter.notifyDataSetChanged();*/
         super.onResume();
     }
 
 
 
     @Override
-    public void test() {
-        Log.d("test", matchList.getSize() + "" );
+    public void doneDownloading() {
+        Log.d("test", matchList.getSize() + "");
+
+        int numWins = 0;
+        int numLoss = 0;
+        double totalKill = 0;
+        double totalDeath = 0;
+        double totalAssist = 0;
+
+        for (Map<String, ?> match : matchList.getList()) {
+            boolean win = Boolean.parseBoolean(match.get("win").toString());
+
+            if (win) {
+                numWins++;
+            }
+            else if (!win){
+                numLoss++;
+            }
+
+            totalKill += Integer.parseInt(match.get("kills").toString());
+            totalDeath += Integer.parseInt(match.get("deaths").toString());
+            totalAssist += Integer.parseInt(match.get("assists").toString());
+
+        }
+
+        double kda =  (totalKill + totalAssist) / totalDeath;
+        new DecimalFormat("#.##").format(kda);
+        shareMessage = "In the past " + (numWins+numLoss) + " games, " + summonerName + " has won " + numWins + " games out of their last 10 with a total of " + (int) totalKill + " kills, " + (int) totalDeath + " deaths, and " + (int) totalAssist + " assists, for a " + new DecimalFormat("#.##").format(kda) + "KDA";
+
+        Log.d("test", shareMessage);
+
+        /*intentShare = new Intent(Intent.ACTION_SEND);
+        intentShare.setType("text/plain");
+        intentShare.putExtra(Intent.EXTRA_TEXT, shareMessage);
+
+
+
+        if (shareProvider != null && intentShare != null) {
+            shareProvider.setShareIntent(intentShare);
+        }*/
+
+
+
+    }
+
+    private void actionShare(String shareMessage) {
+        intentShare = new Intent(Intent.ACTION_SEND);
+        intentShare.setType("text/plain");
+        intentShare.putExtra(Intent.EXTRA_TEXT, shareMessage);
+        startActivity(intentShare);
     }
 }

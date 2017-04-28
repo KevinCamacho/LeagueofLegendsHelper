@@ -493,7 +493,7 @@ public class RiotPortal {
         private test t;
 
         public interface test {
-            public void test();
+            public void doneDownloading();
         }
 
         public GetRecentMatches(MatchList mL, RecyclerView.Adapter adapter, test t) {
@@ -623,6 +623,8 @@ public class RiotPortal {
 
         @Override
         protected void onPostExecute(MatchList list) {
+
+            t.doneDownloading();
 
             /*MatchList mL = matchListRef.get();
 

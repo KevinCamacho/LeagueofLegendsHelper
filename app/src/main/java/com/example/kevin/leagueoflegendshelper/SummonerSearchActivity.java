@@ -84,11 +84,11 @@ public class SummonerSearchActivity extends AppCompatActivity implements Navigat
         if (searchMenuItem != null) {
             searchMenuItem.collapseActionView();
         }
-        if (sumFrag != null) {
+        /*if (sumFrag != null) {
             getSupportFragmentManager().beginTransaction().remove(sumFrag).commit();
         }
         searchLabel.setText("Search for a summoner to begin");
-        toolBarTitle.setText("Summoner Search");
+        toolBarTitle.setText("Summoner Search");*/
         super.onResume();
     }
 
