@@ -144,7 +144,22 @@ public class ChampionRVFragment extends Fragment implements ChampionRVAdapter.Ch
 
     @Override
     public void champImageClicked(View view, int position) {
+        //Log.d("test", position + "");
+        String id = ChampionList.getItem(position).get("id").toString();
+
+        ChampionList.restoreList();
+        champAdapter.notifyDataSetChanged();
+
+        int index = ChampionList.getIndexOf(id);
+        //Log.d("test", index + "");
+        try {
+            rV.scrollToPosition(index+5);
+        }
+        catch(Exception e) {
+            rV.scrollToPosition(index);
+        }
+
         searchMenuItem.collapseActionView();
-        champRVCardClickedListener.champRVClicked(view, position);
+        champRVCardClickedListener.champRVClicked(view, index);
     }
 }
